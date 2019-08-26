@@ -7,11 +7,8 @@
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="maximizable" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="Rutas"/>
+    <Property name="title" type="java.lang.String" value="Puntos de control"/>
   </Properties>
-  <AccessibilityProperties>
-    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-  </AccessibilityProperties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
@@ -30,33 +27,30 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Component id="elementText" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="searchingComboBox" min="-2" pref="103" max="-2" attributes="0"/>
-              <EmptySpace pref="151" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="168" max="-2" attributes="0"/>
               <Component id="orderText" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="orderComboBox" min="-2" pref="73" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="searchingButton" min="-2" pref="108" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="separator" alignment="1" max="32767" attributes="0"/>
-                              <Component id="routesPanel" alignment="1" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Component id="searchingText" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                          <Component id="createUserPanel" min="-2" pref="619" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="searchingText" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -64,24 +58,22 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="searchingButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="searchingComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="orderComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="elementText" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="orderText" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="orderComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="searchingButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="612" max="32767" attributes="0"/>
+              <EmptySpace pref="611" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="searchingText" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                  <Component id="separator" min="-2" pref="10" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="routesPanel" min="-2" pref="578" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                  <Component id="createUserPanel" min="-2" pref="578" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -113,17 +105,22 @@
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="6">
             <StringItem index="0" value="---vacio---"/>
-            <StringItem index="1" value="IdRoute"/>
-            <StringItem index="2" value="Destination_Id"/>
-            <StringItem index="3" value="Disabled"/>
-            <StringItem index="4" value="PackagesInRoute"/>
-            <StringItem index="5" value=" "/>
+            <StringItem index="1" value="IdCheckpoint"/>
+            <StringItem index="2" value="Route_Id"/>
+            <StringItem index="3" value="User_name"/>
+            <StringItem index="4" value="GlobalFare"/>
+            <StringItem index="5" value="SpecialFare"/>
           </StringArray>
         </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="orderText">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Orden:"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="orderComboBox">
       <Properties>
@@ -159,17 +156,15 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchingButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSeparator" name="separator">
-    </Component>
-    <Container class="javax.swing.JTabbedPane" name="routesPanel">
+    <Container class="javax.swing.JTabbedPane" name="createUserPanel">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="tablePanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Rutas">
-                <Property name="tabTitle" type="java.lang.String" value="Rutas"/>
+              <JTabbedPaneConstraints tabName="Puntos de control">
+                <Property name="tabTitle" type="java.lang.String" value="Puntos de control"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -180,14 +175,16 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="scrollPanel" alignment="0" pref="595" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="informationLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="600" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="updateButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="desactivateButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="13" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -195,19 +192,20 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrollPanel" min="-2" pref="467" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="467" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="desactivateButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="informationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="updateButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="41" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JScrollPane" name="scrollPanel">
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
@@ -238,6 +236,16 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                       </TableColumnModel>
                     </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -245,17 +253,29 @@
                     </Property>
                   </Properties>
                   <BindingProperties>
-                    <BindingProperty name="elements" source="Form" sourcePath="${observableRoutes}" target="table" targetPath="elements" updateStrategy="0" immediately="true">
+                    <BindingProperty name="elements" source="Form" sourcePath="${checkpointObservable}" target="table" targetPath="elements" updateStrategy="0" immediately="true">
+                      <Subbinding sourcePath="${checkpointId}">
+                        <BindingParameter name="NAME" value="Checkpoint Id"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                      </Subbinding>
                       <Subbinding sourcePath="${routeId}">
+                        <BindingParameter name="NAME" value="Route Id"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                       </Subbinding>
-                      <Subbinding sourcePath="${destinationId}">
+                      <Subbinding sourcePath="${operatorName}">
+                        <BindingParameter name="NAME" value="Operator Name"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                       </Subbinding>
-                      <Subbinding sourcePath="${packagesInRoute}">
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                      <Subbinding sourcePath="${globalFare}">
+                        <BindingParameter name="NAME" value="Global Fare"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Double.class"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${specialFare}">
+                        <BindingParameter name="NAME" value="Special Fare"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Double.class"/>
                       </Subbinding>
                       <Subbinding sourcePath="${disabled}">
+                        <BindingParameter name="NAME" value="Disabled"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
                       </Subbinding>
                     </BindingProperty>
@@ -280,7 +300,24 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="desactivateButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="informationLabel">
+            <Component class="javax.swing.JButton" name="updateButton">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="99" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="DejaVu Sans Condensed" size="14" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="66" green="66" red="66" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Actualizar Datos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="DejaVu Sans Condensed" size="14" style="0"/>
@@ -296,8 +333,8 @@
         <Container class="javax.swing.JPanel" name="createPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Crear Ruta">
-                <Property name="tabTitle" type="java.lang.String" value="Crear Ruta"/>
+              <JTabbedPaneConstraints tabName="Crear punto de control">
+                <Property name="tabTitle" type="java.lang.String" value="Crear punto de control"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -308,16 +345,16 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Component id="creatStuffPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="204" max="32767" attributes="0"/>
+                      <EmptySpace pref="201" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="creatStuffPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="212" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -335,22 +372,37 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="nameText" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="userText" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="idField" max="32767" attributes="0"/>
-                              <Component id="destinationComboBox" pref="268" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lastNameText" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="nameText" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="userText" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="passwordText" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="roleText" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="roleText1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="idField" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="operatorComboBox" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="routeComboBox" alignment="0" min="-2" pref="214" max="-2" attributes="0"/>
+                                          <Component id="sizeSpinner" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="globalFeeCheckbox" alignment="0" pref="212" max="32767" attributes="0"/>
+                                          <Component id="feeField" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="createButton" min="-2" pref="78" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="createButton" min="-2" pref="78" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -366,17 +418,48 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="nameText" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="destinationComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="routeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lastNameText" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="operatorComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="passwordText" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sizeSpinner" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="roleText" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="globalFeeCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="roleText1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="feeField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="createButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace pref="15" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="idField">
+                </Component>
+                <Component class="javax.swing.JLabel" name="roleText">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="DejaVu Sans Condensed" size="15" style="1"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="33" red="0" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Tarifa Global:"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="nameText">
                   <Properties>
@@ -386,7 +469,34 @@
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="66" green="33" red="0" type="rgb"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Destino:"/>
+                    <Property name="text" type="java.lang.String" value="Ruta:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="operatorComboBox">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="passwordText">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="DejaVu Sans Condensed" size="15" style="1"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="33" red="0" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Tama&#xf1;o:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lastNameText">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="DejaVu Sans Condensed" size="15" style="1"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="33" red="0" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Operador:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="createButton">
@@ -417,7 +527,7 @@
                     <Property name="text" type="java.lang.String" value="ID:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="destinationComboBox">
+                <Component class="javax.swing.JComboBox" name="routeComboBox">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="4">
@@ -432,16 +542,45 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
+                <Component class="javax.swing.JSpinner" name="sizeSpinner">
+                  <Properties>
+                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                      <SpinnerModel initial="1" maximum="1000" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="globalFeeCheckbox">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="DejaVu Sans Condensed" size="10" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="66" red="66" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Seleccione para asignar tarifa global"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="globalFeeCheckboxMouseClicked"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="roleText1">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="DejaVu Sans Condensed" size="15" style="1"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="33" red="0" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Tarifa Independiente:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="feeField">
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="orderText">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Orden:"/>
-      </Properties>
-    </Component>
   </SubComponents>
 </Form>

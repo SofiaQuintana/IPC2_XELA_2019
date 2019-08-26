@@ -18,7 +18,7 @@ import packagedelivery.DummyClasses.User;
  *
  * @author zofia
  */
-public class UserDBManager {
+public class UserDBManager  {
     private Connection connection;
     private List<User> users = new ArrayList<>();
     private static final String SELECT_USER_QUERY = "SELECT * FROM User WHERE Username = ";
@@ -87,13 +87,5 @@ public class UserDBManager {
             throw new Exception("Este usuario ya existe");
         }
     }
-          
-      public void updateInfoUser(String query) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.execute();
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+ 
 }

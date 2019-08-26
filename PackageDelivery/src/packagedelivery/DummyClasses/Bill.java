@@ -5,6 +5,9 @@
  */
 package packagedelivery.DummyClasses;
 
+
+import java.time.LocalDate;
+
 /**
  *
  * @author zofia
@@ -12,14 +15,42 @@ package packagedelivery.DummyClasses;
 public class Bill {
     private String billNumber;
     private String clientNit;
-    private String packageId;
+    private String name;
+    private String address;
+    private LocalDate date;
 
-    public Bill(String billNumber, String clientNit, String packageId) {
+    public Bill(String billNumber, String clientNit, String name, String address, LocalDate date) {
         this.billNumber = billNumber;
         this.clientNit = clientNit;
-        this.packageId = packageId;
+        this.name = name;
+        this.address = address;
+        this.date = date;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+   
     public String getBillNumber() {
         return billNumber;
     }
@@ -35,13 +66,4 @@ public class Bill {
     public void setClientNit(String clientNit) {
         this.clientNit = clientNit;
     }
-
-    public String getPackageId() {
-        return packageId;
-    }
-
-    public void setPackageId(String packageId) {
-        this.packageId = packageId;
-    }
-    
 }

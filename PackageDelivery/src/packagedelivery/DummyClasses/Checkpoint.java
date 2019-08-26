@@ -5,43 +5,33 @@
  */
 package packagedelivery.DummyClasses;
 
-import java.util.LinkedList;
-
 /**
  *
  * @author zofia
  */
-public class Checkpoint extends LinkedList<Object>{
+public class Checkpoint {
     private String checkpointId;
     private String routeId;
     private String operatorName;
+    private String rateId;
     private int queueSize;
     private double globalFare;
     private double specialFare;
     private boolean availability;
     private boolean disabled;
 
-    public Checkpoint(String checkpointId, String routeId, String operatorName, int queueSize, double globalFare, double specialFare, boolean availability, boolean disabled) {
+    public Checkpoint(String checkpointId, String routeId, String operatorName, String rateId, int queueSize, double globalFare, double specialFare, boolean availability, boolean disabled) {
         this.checkpointId = checkpointId;
         this.routeId = routeId;
         this.operatorName = operatorName;
+        this.rateId = rateId;
         this.queueSize = queueSize;
         this.globalFare = globalFare;
         this.specialFare = specialFare;
         this.availability = availability;
         this.disabled = disabled;
     }
-
-    public Checkpoint(String checkpointId, String routeId, String operatorName, int queueSize, double globalFare, boolean availability, boolean disabled) {
-        this.checkpointId = checkpointId;
-        this.routeId = routeId;
-        this.operatorName = operatorName;
-        this.queueSize = queueSize;
-        this.globalFare = globalFare;
-        this.availability = availability;
-        this.disabled = disabled;
-    }
-
+  
     public String getCheckpointId() {
         return checkpointId;
     }

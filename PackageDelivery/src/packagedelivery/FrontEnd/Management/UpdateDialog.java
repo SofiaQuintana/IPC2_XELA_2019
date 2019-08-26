@@ -6,10 +6,19 @@
 package packagedelivery.FrontEnd.Management;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import packagedelivery.DBmanagers.DBManager;
 import packagedelivery.DBmanagers.DestinationDBManager;
+import packagedelivery.DBmanagers.RouteDBManager;
 import packagedelivery.DBmanagers.UserDBManager;
+import packagedelivery.DummyClasses.Checkpoint;
 import packagedelivery.DummyClasses.Destination;
+import packagedelivery.DummyClasses.Rate;
+import packagedelivery.DummyClasses.Route;
 import packagedelivery.DummyClasses.User;
 
 /**
@@ -20,20 +29,34 @@ public class UpdateDialog extends javax.swing.JDialog {
     private Connection connection;
     private User user;
     private Destination destination;
-    private UserDBManager userInfo;
-    private DestinationDBManager destinationInfo;
+    private List<Route> routes;
+    private List<Rate> rate;
+    private List<User> users;
+    private Checkpoint checkpoint;
+    private DBManager manager;
+    private RouteDBManager routeManager;
+    private UserDBManager userManager;
     private static final String UPDATE_USER_QUERY = "UPDATE User SET ";
     private static final String UPDATE_DESTINATION_QUERY = "UPDATE Destination SET ";
+    private static final String UPDATE_CHECKPOINT_QUERY = "UPDATE Checkpoint SET ";
+    private static final String ROUTES_QUERY = "SELECT * FROM Route WHERE Availability = 1 AND Disabled = 0;";
+    private static final String USER_QUERY = "SELECT * FROM User WHERE Role = 'Operador' AND Availability = 1";
+    private static final String RATE_QUERY = "SELECT * FROM Rate;";
     /**
      * Creates new form updateDialog
      */
-    public UpdateDialog(boolean modal, Connection connection, User user, Destination destination) {
+    public UpdateDialog(boolean modal, Connection connection, User user, 
+            Destination destination, Checkpoint checkpoint) {
+        routes = new ArrayList<>();
+        users = new ArrayList<>();
         initComponents();
         this.connection = connection;
         this.user = user;
         this.destination = destination;
-        userInfo = new UserDBManager(this.connection);
-        destinationInfo = new DestinationDBManager(this.connection);
+        this.checkpoint = checkpoint;
+        manager = new DBManager(connection);
+        routeManager = new RouteDBManager(connection);
+        userManager = new UserDBManager(connection);
         this.setModal(modal);
         setEnabledStuff();
     }
@@ -68,6 +91,20 @@ public class UpdateDialog extends javax.swing.JDialog {
         userText1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        creatStuffPanel1 = new javax.swing.JPanel();
+        idField = new javax.swing.JTextField();
+        globalFeeLabel = new javax.swing.JLabel();
+        routeLabel = new javax.swing.JLabel();
+        operatorComboBox = new javax.swing.JComboBox<>();
+        sizeLabel = new javax.swing.JLabel();
+        operatorLabel = new javax.swing.JLabel();
+        updateCheckpointButton = new javax.swing.JButton();
+        idLabel = new javax.swing.JLabel();
+        routeComboBox = new javax.swing.JComboBox<>();
+        sizeSpinner = new javax.swing.JSpinner();
+        globalFeeCheckbox = new javax.swing.JCheckBox();
+        feeLabel = new javax.swing.JLabel();
+        feeIndependentField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -210,7 +247,7 @@ public class UpdateDialog extends javax.swing.JDialog {
                                     .addComponent(feeField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(destinationField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(updateDestinationButton))))
-                        .addGap(0, 12, Short.MAX_VALUE))))
+                        .addGap(0, 60, Short.MAX_VALUE))))
         );
         creatStuffPanelLayout.setVerticalGroup(
             creatStuffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,10 +266,121 @@ public class UpdateDialog extends javax.swing.JDialog {
                 .addComponent(jLabel3)
                 .addGap(16, 16, 16)
                 .addComponent(updateDestinationButton)
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Destinos", creatStuffPanel);
+
+        creatStuffPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        globalFeeLabel.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        globalFeeLabel.setForeground(new java.awt.Color(0, 51, 102));
+        globalFeeLabel.setText("Tarifa Global:");
+
+        routeLabel.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        routeLabel.setForeground(new java.awt.Color(0, 51, 102));
+        routeLabel.setText("Ruta:");
+
+        sizeLabel.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        sizeLabel.setForeground(new java.awt.Color(0, 51, 102));
+        sizeLabel.setText("Tamaño:");
+
+        operatorLabel.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        operatorLabel.setForeground(new java.awt.Color(0, 51, 102));
+        operatorLabel.setText("Operador:");
+
+        updateCheckpointButton.setBackground(new java.awt.Color(153, 153, 153));
+        updateCheckpointButton.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 14)); // NOI18N
+        updateCheckpointButton.setForeground(new java.awt.Color(102, 102, 102));
+        updateCheckpointButton.setText("Actualizar");
+        updateCheckpointButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateCheckpointButtonActionPerformed(evt);
+            }
+        });
+
+        idLabel.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        idLabel.setForeground(new java.awt.Color(0, 51, 102));
+        idLabel.setText("ID:");
+
+        routeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        sizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
+
+        globalFeeCheckbox.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 10)); // NOI18N
+        globalFeeCheckbox.setForeground(new java.awt.Color(102, 102, 102));
+        globalFeeCheckbox.setText("Seleccione para asignar tarifa global");
+        globalFeeCheckbox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                globalFeeCheckboxMouseClicked(evt);
+            }
+        });
+
+        feeLabel.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        feeLabel.setForeground(new java.awt.Color(0, 51, 102));
+        feeLabel.setText("Tarifa Independiente:");
+
+        javax.swing.GroupLayout creatStuffPanel1Layout = new javax.swing.GroupLayout(creatStuffPanel1);
+        creatStuffPanel1.setLayout(creatStuffPanel1Layout);
+        creatStuffPanel1Layout.setHorizontalGroup(
+            creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(creatStuffPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(operatorLabel)
+                    .addComponent(routeLabel)
+                    .addComponent(idLabel)
+                    .addComponent(sizeLabel)
+                    .addComponent(globalFeeLabel)
+                    .addComponent(feeLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(idField)
+                        .addComponent(operatorComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(routeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(globalFeeCheckbox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(feeIndependentField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, creatStuffPanel1Layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(updateCheckpointButton)))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        creatStuffPanel1Layout.setVerticalGroup(
+            creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(creatStuffPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idLabel)
+                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(routeLabel)
+                    .addComponent(routeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(operatorLabel)
+                    .addComponent(operatorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sizeLabel)
+                    .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(globalFeeCheckbox)
+                    .addComponent(globalFeeLabel))
+                .addGap(18, 18, 18)
+                .addGroup(creatStuffPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(feeLabel)
+                    .addComponent(feeIndependentField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(updateCheckpointButton)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Puntos de control", creatStuffPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -241,7 +389,7 @@ public class UpdateDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jTabbedPane1)
-                .addGap(16, 16, 16))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,26 +405,71 @@ public class UpdateDialog extends javax.swing.JDialog {
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
         String query = getUserValues();       
-        userInfo.updateInfoUser(query);
+        manager.updateElement(query);
         JOptionPane.showMessageDialog(this, "Usuario actualizado...", "Informacion", JOptionPane.INFORMATION_MESSAGE);
         this.setVisible(false);
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void updateDestinationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDestinationButtonActionPerformed
         // 
-        destinationInfo.updateDestination(getDestinationValues());
+        manager.updateElement(getDestinationValues());
         JOptionPane.showMessageDialog(this, "Destino actualizado...", "Informacion", JOptionPane.INFORMATION_MESSAGE);
         this.setVisible(false);
     }//GEN-LAST:event_updateDestinationButtonActionPerformed
 
+    private void updateCheckpointButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCheckpointButtonActionPerformed
+        // TODO add your handling code here:
+        if(idField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese todos los campos...", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                this.rate = manager.getRate(RATE_QUERY);
+                Rate generalRate = this.rate.get(0);
+                manager.updateElement(getCheckpointValues(generalRate));
+                JOptionPane.showMessageDialog(this, "Punto de control actualizado...", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                this.setVisible(false);
+            } catch(Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_updateCheckpointButtonActionPerformed
+
+    private void globalFeeCheckboxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_globalFeeCheckboxMouseClicked
+        // TODO add your handling code here:
+        if(globalFeeCheckbox.isSelected()) {
+            feeField.disable();
+            feeField.setText("");
+            JOptionPane.showMessageDialog(this, "Tarifa asignada...", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            feeField.enable();
+        }
+    }//GEN-LAST:event_globalFeeCheckboxMouseClicked
+
     public void setEnabledStuff() {
         if(this.user != null) {
             disableDestinationStuff();
+            disableCheckpointStuff();
             setUserValues();
         } else if(this.destination != null) {
             setDestinationValues();
+            disableCheckpointStuff();
             disableUserStuff();
+        } else if(this.checkpoint != null) {
+            disableUserStuff();
+            disableDestinationStuff();
+            setComboBoxesModel();
+            setCheckpointValues();
         }
+    }
+    
+    public void disableCheckpointStuff() {
+        idField.disable();
+        routeComboBox.disable();
+        operatorComboBox.disable();
+        sizeSpinner.disable();
+        globalFeeCheckbox.disable();
+        feeField.disable();
+        updateCheckpointButton.hide();
     }
     
     public void disableDestinationStuff() {
@@ -292,6 +485,19 @@ public class UpdateDialog extends javax.swing.JDialog {
         passwordField.disable();
         roleCombo.disable();
         updateButton.hide();
+    }
+    
+    public void setCheckpointValues() {
+        idField.setText(this.checkpoint.getCheckpointId());
+        idField.setEnabled(false);
+        routeComboBox.getModel().setSelectedItem(this.checkpoint.getRouteId());
+        operatorComboBox.getModel().setSelectedItem(this.checkpoint.getOperatorName());
+        sizeSpinner.getModel().setValue(this.checkpoint.getQueueSize());
+        if(this.checkpoint.getGlobalFare() == 0) {
+            feeField.setText(String.valueOf(this.checkpoint.getSpecialFare()));
+        } else {
+            globalFeeCheckbox.setSelected(true);
+        }
     }
     
     public void setDestinationValues() {
@@ -327,11 +533,60 @@ public class UpdateDialog extends javax.swing.JDialog {
                + "', Role = '" + role + "', Password = '" + password + "' WHERE Username = '" + username + "';";
         return query;
 }
+    
+    public String getCheckpointValues(Rate generalRate) {
+        String query = UPDATE_CHECKPOINT_QUERY;
+        String id = this.checkpoint.getCheckpointId();
+        String routeId = routeComboBox.getModel().getSelectedItem().toString();
+        String operator = operatorComboBox.getModel().getSelectedItem().toString();
+        int size = (int) sizeSpinner.getModel().getValue();
+        if(globalFeeCheckbox.isSelected()) {
+            double globalFee = generalRate.getGlobalFare();
+            query += "Route_Id = '" + routeId  + "', User_name = '" + operator + "', QueueSize = " + size 
+                    + ", GlobalFare = " + globalFee + ", SpecialFare = 0 WHERE IdCheckpoint = '" + id + "';";
+            return query;
+        } else {
+            double fee = Double.parseDouble(feeIndependentField.getText());
+            query +=  "Route_Id = '" + routeId  + "', User_name = '" + operator + "', QueueSize = " + size 
+                    + ", GlobalFare = 0, SpecialFare = " + fee + "WHERE IdCheckpoint = '" + id + "';";
+            return query;
+        }
+    }
 
+        public void setComboBoxesModel() {
+        Vector userVector = new Vector();
+        Vector routeVector = new Vector();
+        this.users = userManager.getUsers(USER_QUERY);
+        this.routes = routeManager.getRoutes(ROUTES_QUERY);
+        User user;
+        Route route;
+        for (int i = 0; i < users.size(); i++) {
+            user = users.get(i);
+            userVector.add(user.getUsername());
+        }
+        
+        for (int i = 0; i < routes.size(); i++) {
+            route = routes.get(i);
+            routeVector.add(route.getRouteId());
+        }
+        
+        DefaultComboBoxModel userModel = new DefaultComboBoxModel(userVector);
+        DefaultComboBoxModel routeModel = new DefaultComboBoxModel(routeVector);
+        
+        this.operatorComboBox.setModel(userModel);
+        this.routeComboBox.setModel(routeModel);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel creatStuffPanel;
+    private javax.swing.JPanel creatStuffPanel1;
     private javax.swing.JTextField destinationField;
     private javax.swing.JTextField feeField;
+    private javax.swing.JTextField feeIndependentField;
+    private javax.swing.JLabel feeLabel;
+    private javax.swing.JCheckBox globalFeeCheckbox;
+    private javax.swing.JLabel globalFeeLabel;
+    private javax.swing.JTextField idField;
+    private javax.swing.JLabel idLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -340,11 +595,18 @@ public class UpdateDialog extends javax.swing.JDialog {
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameText;
     private javax.swing.JLabel nameText1;
+    private javax.swing.JComboBox<String> operatorComboBox;
+    private javax.swing.JLabel operatorLabel;
     private javax.swing.JTextField passwordField;
     private javax.swing.JLabel passwordText;
     private javax.swing.JComboBox<String> roleCombo;
     private javax.swing.JLabel roleText;
+    private javax.swing.JComboBox<String> routeComboBox;
+    private javax.swing.JLabel routeLabel;
+    private javax.swing.JLabel sizeLabel;
+    private javax.swing.JSpinner sizeSpinner;
     private javax.swing.JButton updateButton;
+    private javax.swing.JButton updateCheckpointButton;
     private javax.swing.JButton updateDestinationButton;
     private javax.swing.JPanel updatePanel;
     private javax.swing.JTextField userField;

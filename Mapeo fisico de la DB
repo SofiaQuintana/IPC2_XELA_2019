@@ -1,0 +1,162 @@
+CREATE 'PackageDelivery' DEFAULT CHARACTER SET utf8;
+USE 'PackageDelivery' ;
+
+CREATE TABLE  'Client' (
+  'Nit' VARCHAR(20) NOT NULL,
+  'Name' VARCHAR(50) NOT NULL,
+  'LastName' VARCHAR(50) NOT NULL,
+  'Address' VARCHAR(150) NOT NULL,
+  PRIMARY KEY ('Nit'));
+
+CREATE TABLE  'Destination' (
+  'IdDestination' VARCHAR(100) NOT NULL,
+  'Fee' DOUBLE NOT NULL,
+  'Profit' DOUBLE NULL,
+  PRIMARY KEY ('IdDestination'));
+
+CREATE TABLE  'Rate' (
+  'idRate' VARCHAR(5) NOT NULL,
+  'GlobalFare' DOUBLE NOT NULL DEFAULT 0,
+  'WeightFare' DOUBLE NOT NULL DEFAULT 0,
+  'PriorizationFare' DOUBLE NOT NULL DEFAULT 0,
+  PRIMARY KEY ('idRate'));
+
+CREATE TABLE  'Bill' (
+  'idBill' VARCHAR(50) NOT NULL,
+  'Client_Nit' VARCHAR(20) NOT NULL,
+  'Name' VARCHAR(100) NOT NULL,
+  'Address' VARCHAR(150) NOT NULL,
+  PRIMARY KEY ('idBill', 'Client_Nit'),
+  INDEX 'fk_Bill_Client1_idx' ('Client_Nit' ASC),
+  CONSTRAINT 'fk_Bill_Client1'
+    FOREIGN KEY ('Client_Nit')
+    REFERENCES 'PackageDelivery'.'Client' ('Nit')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE  'Package' (
+  'IdPackage' VARCHAR(15) NOT NULL,
+  'Client_Nit' VARCHAR(20) NOT NULL,
+  'Destination_Id' VARCHAR(100) NOT NULL,
+  'Bill_id' VARCHAR(50) NOT NULL,
+  'Rate_Id' VARCHAR(5) NOT NULL,
+  'Priorized' TINYINT(1) NOT NULL,
+  'Weight' DOUBLE NOT NULL,
+  'GlobalFare' DOUBLE NOT NULL,
+  'PriorizationFare' DOUBLE NOT NULL,
+  'WeightFare' DOUBLE NOT NULL,
+  'Price' DOUBLE NOT NULL,
+  'Availability' TINYINT(1) NOT NULL,
+  'Date' DATE NOT NULL,
+  PRIMARY KEY ('IdPackage', 'Client_Nit', 'Destination_Id', 'Bill_id'),
+  INDEX 'fk_Package_Client1_idx' ('Client_Nit' ASC),
+  INDEX 'fk_Package_Destination1_idx' ('Destination_Id' ASC),
+  INDEX 'fk_Package_Rate1_idx' ('Rate_Id' ASC),
+  INDEX 'fk_Package_Bill1_idx' ('Bill_id' ASC),
+  CONSTRAINT 'fk_Package_Client'
+    FOREIGN KEY ('Client_Nit')
+    REFERENCES 'PackageDelivery'.'Client' ('Nit')
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT 'fk_Package_Destination1'
+    FOREIGN KEY ('Destination_Id')
+    REFERENCES 'PackageDelivery'.'Destination' ('IdDestination')
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT 'fk_Package_Rate1'
+    FOREIGN KEY ('Rate_Id')
+    REFERENCES 'PackageDelivery'.'Rate' ('idRate')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_Package_Bill1'
+    FOREIGN KEY ('Bill_id')
+    REFERENCES 'PackageDelivery'.'Bill' ('idBill')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE  'Route' (
+  'IdRoute' VARCHAR(25) NOT NULL,
+  'Destination_Id' VARCHAR(100) NOT NULL,
+  'Availability' TINYINT(1) NOT NULL,
+  'Disabled' TINYINT(1) NOT NULL,
+  'PackagesInRoute' INT NULL,
+  PRIMARY KEY ('IdRoute', 'Destination_Id'),
+  INDEX 'fk_Route_Destination1_idx' ('Destination_Id' ASC),
+  CONSTRAINT 'fk_Route_Destination1'
+    FOREIGN KEY ('Destination_Id')
+    REFERENCES 'PackageDelivery'.'Destination' ('IdDestination')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE 'User' (
+  'Username' VARCHAR(100) NOT NULL,
+  'Name' VARCHAR(100) NOT NULL,
+  'LastName' VARCHAR(100) NOT NULL,
+  'Password' VARCHAR(100) NOT NULL,
+  'Role' VARCHAR(13) NOT NULL,
+  'Availability' TINYINT(1) NOT NULL,
+  PRIMARY KEY ('Username'));
+
+
+CREATE TABLE  'Checkpoint' (
+  'IdCheckpoint' VARCHAR(100) NOT NULL,
+  'Route_Id' VARCHAR(25) NOT NULL,
+  'User_name' VARCHAR(100) NOT NULL,
+  'Rate_id' VARCHAR(5) NOT NULL,
+  'QueueSize' INT NOT NULL,
+  'GlobalFare' DOUBLE NOT NULL,
+  'SpecialFare' DOUBLE NULL,
+  'Availability' TINYINT(1) NOT NULL,
+  'Disabled' TINYINT(1) NOT NULL,
+  PRIMARY KEY ('IdCheckpoint', 'Route_Id', 'User_name'),
+  INDEX 'fk_Checkpoint_User1_idx' ('User_name' ASC),
+  INDEX 'fk_Checkpoint_Route1_idx' ('Route_Id' ASC),
+  INDEX 'fk_Checkpoint_Rate1_idx' ('Rate_id' ASC),
+  CONSTRAINT 'fk_Checkpoint_User1'
+    FOREIGN KEY ('User_name')
+    REFERENCES 'PackageDelivery'.'User' ('Username')
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT 'fk_Checkpoint_Route1'
+    FOREIGN KEY ('Route_Id')
+    REFERENCES 'PackageDelivery'.'Route' ('IdRoute')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_Checkpoint_Rate1'
+    FOREIGN KEY ('Rate_id')
+    REFERENCES 'PackageDelivery'.'Rate' ('idRate')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE  'Register' (
+  'Package_Id' VARCHAR(15) NOT NULL,
+  'Checkpoint_Id' VARCHAR(100) NOT NULL,
+  'Hours' INT NOT NULL,
+  'Date' DATE NOT NULL,
+  'Charge' DOUBLE NOT NULL,
+  PRIMARY KEY ('Package_Id', 'Checkpoint_Id'),
+  INDEX 'fk_Register_Checkpoint1_idx' ('Checkpoint_Id' ASC),
+  CONSTRAINT 'fk_Register_Package'
+    FOREIGN KEY ('Package_Id')
+    REFERENCES 'PackageDelivery'.'Package' ('IdPackage')
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT 'fk_Register_Checkpoint1'
+    FOREIGN KEY ('Checkpoint_Id')
+    REFERENCES 'PackageDelivery'.'Checkpoint' ('IdCheckpoint')
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE);
+
+
+CREATE TABLE  'Storage' (
+  'Package_Id' VARCHAR(15) NOT NULL,
+  PRIMARY KEY ('Package_Id'),
+  CONSTRAINT 'fk_Storage_Package1'
+    FOREIGN KEY ('Package_Id')
+    REFERENCES 'PackageDelivery'.'Package' ('IdPackage')
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);

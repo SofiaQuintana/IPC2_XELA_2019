@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="PackageDelivery">
+  <ClassDiagramComponents>
+    <Class name="Run" package="packagedelivery.Run" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="StorageDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="20.0" yPosition="155.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="storages" type="List&lt;Storage&gt;" visibility="private"/>
+        <Field name="SELECT_STORAGE_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getElements" returnType="List&lt;Storage&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getPackagesInQueue" returnType="List&lt;Storage&gt;" visibility="public"/>
+        <Method name="addPackageToQueue" returnType="void" visibility="public">
+          <Argument type="String" name="packageId"/>
+          <Argument type="Date" name="date"/>
+          <Argument type="boolean" name="priorized"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="PackageDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="-7.0" yPosition="20.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="packages" type="List&lt;Package&gt;" visibility="private"/>
+        <Field name="SELECT_PACKAGE_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="generateCode" returnType="String" visibility="public"/>
+        <Method name="getElements" returnType="List&lt;Package&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getPackageInList" returnType="Package" visibility="public">
+          <Argument type="String" name="packageId"/>
+        </Method>
+        <Method name="addPackage" returnType="void" visibility="public">
+          <Argument type="String" name="packageId"/>
+          <Argument type="String" name="clientNit"/>
+          <Argument type="String" name="destinationId"/>
+          <Argument type="String" name="billId"/>
+          <Argument type="String" name="rateId"/>
+          <Argument type="boolean" name="priorized"/>
+          <Argument type="double" name="weight"/>
+          <Argument type="double" name="globalFare"/>
+          <Argument type="double" name="priorizationFare"/>
+          <Argument type="double" name="weightFare"/>
+          <Argument type="double" name="price"/>
+          <Argument type="boolean" name="availability"/>
+          <Argument type="Date" name="date"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ClientDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="571.0" yPosition="262.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="clients" type="List&lt;Client&gt;" visibility="private"/>
+        <Field name="SELECT_CLIENT_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getElements" returnType="List&lt;Client&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getClienInList" returnType="Client" visibility="public">
+          <Argument type="String" name="nit"/>
+        </Method>
+        <Method name="addClient" returnType="void" visibility="public">
+          <Argument type="String" name="nit"/>
+          <Argument type="String" name="name"/>
+          <Argument type="String" name="lastName"/>
+          <Argument type="String" name="address"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="CheckpointDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="checkpoints" type="List&lt;Checkpoint&gt;" visibility="private"/>
+        <Field name="SELECT_CHECKPOINT_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="SELECT" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getElements" returnType="List&lt;Checkpoint&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getCheckpointInList" returnType="Checkpoint" visibility="public">
+          <Argument type="String" name="checkpointId"/>
+        </Method>
+        <Method name="getCheckpoint" returnType="Checkpoint" visibility="public">
+          <Argument type="String" name="routeId"/>
+        </Method>
+        <Method name="addCheckpoint" returnType="void" visibility="public">
+          <Argument type="String" name="idCheckpoint"/>
+          <Argument type="String" name="idRoute"/>
+          <Argument type="String" name="operator"/>
+          <Argument type="String" name="rate"/>
+          <Argument type="int" name="queueSize"/>
+          <Argument type="double" name="globalFare"/>
+          <Argument type="double" name="specialFare"/>
+          <Argument type="boolean" name="availability"/>
+          <Argument type="boolean" name="disabled"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="RegisterDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="registers" type="List&lt;Register&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getElements" returnType="List&lt;Register&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="addRegister" returnType="void" visibility="public">
+          <Argument type="String" name="packageId"/>
+          <Argument type="String" name="checkpointId"/>
+          <Argument type="int" name="hours"/>
+          <Argument type="Date" name="date"/>
+          <Argument type="double" name="charge"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="BillDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="1820.0" yPosition="20.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="bills" type="List&lt;Bill&gt;" visibility="private"/>
+        <Field name="SELECT_BILL_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="generateCode" returnType="String" visibility="public"/>
+        <Method name="getElements" returnType="List&lt;Bill&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getBillInList" returnType="Bill" visibility="public">
+          <Argument type="String" name="IdBill"/>
+        </Method>
+        <Method name="addBill" returnType="void" visibility="public">
+          <Argument type="String" name="IdBill"/>
+          <Argument type="String" name="clientNit"/>
+          <Argument type="String" name="name"/>
+          <Argument type="String" name="address"/>
+          <Argument type="Date" name="date"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="DBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="2415.0" yPosition="262.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="updateElement" returnType="void" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getRate" returnType="List&lt;Rate&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="RouteDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="932.0" yPosition="605.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="routes" type="List&lt;Route&gt;" visibility="private"/>
+        <Field name="SELECT" type="String" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="SELECT_ROUTE_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getRoutes" returnType="List&lt;Route&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getRouteInList" returnType="Route" visibility="public">
+          <Argument type="String" name="routeId"/>
+        </Method>
+        <Method name="getRoute" returnType="Route" visibility="public">
+          <Argument type="String" name="destinationId"/>
+        </Method>
+        <Method name="addRoute" returnType="void" visibility="public">
+          <Argument type="String" name="idRoute"/>
+          <Argument type="String" name="destinationId"/>
+          <Argument type="boolean" name="availability"/>
+          <Argument type="boolean" name="disabled"/>
+          <Argument type="int" name="packagesInRoute"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="DestinationDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="1065.0" yPosition="335.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="destinations" type="List&lt;Destination&gt;" visibility="private"/>
+        <Field name="SELECT_DESTINATION_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getElements" returnType="List&lt;Destination&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getDestinationInList" returnType="Destination" visibility="public">
+          <Argument type="String" name="destinationId"/>
+        </Method>
+        <Method name="addDestination" returnType="void" visibility="public">
+          <Argument type="String" name="destinationId"/>
+          <Argument type="double" name="fee"/>
+          <Argument type="double" name="profit"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="UserDBManager" package="packagedelivery.DBmanagers" visibility="public" xPosition="146.0" yPosition="703.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="users" type="List&lt;User&gt;" visibility="private"/>
+        <Field name="SELECT_USER_QUERY" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getUsers" returnType="List&lt;User&gt;" visibility="public">
+          <Argument type="String" name="query"/>
+        </Method>
+        <Method name="getUserInList" returnType="User" visibility="public">
+          <Argument type="String" name="username"/>
+        </Method>
+        <Method name="addUser" returnType="void" visibility="public">
+          <Argument type="String" name="username"/>
+          <Argument type="String" name="name"/>
+          <Argument type="String" name="lastName"/>
+          <Argument type="String" name="password"/>
+          <Argument type="String" name="role"/>
+          <Argument type="boolean" name="availability"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="StorageManager" package="packagedelivery.Storage" visibility="public" xPosition="1468.0" yPosition="335.0">
+      <Fields>
+        <Field name="connection" type="Connection" visibility="private"/>
+        <Field name="storages" type="List&lt;Storage&gt;" visibility="private"/>
+        <Field name="packages" type="List&lt;Package&gt;" visibility="private"/>
+        <Field name="routes" type="List&lt;Route&gt;" visibility="private"/>
+        <Field name="checkpoints" type="List&lt;Checkpoint&gt;" visibility="private"/>
+        <Field name="storageManager" type="StorageDBManager" visibility="private"/>
+        <Field name="packageManager" type="PackageDBManager" visibility="private"/>
+        <Field name="routeManager" type="RouteDBManager" visibility="private"/>
+        <Field name="registerManager" type="RegisterDBManager" visibility="private"/>
+        <Field name="checkpointManager" type="CheckpointDBManager" visibility="private"/>
+        <Field name="manager" type="DBManager" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Connection" name="connection"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="storage" returnType="void" visibility="public"/>
+        <Method name="getPackages" returnType="void" visibility="public">
+          <Argument type="List&lt;Storage&gt;" name="packge"/>
+        </Method>
+        <Method name="getRoutes" returnType="void" visibility="public"/>
+        <Method name="getCheckpoints" returnType="void" visibility="public"/>
+        <Method name="movePackageInRoute" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Checkpoint" package="packagedelivery.DummyClasses" visibility="public" xPosition="1820.0" yPosition="357.0">
+      <Fields>
+        <Field name="checkpointId" type="String" visibility="private"/>
+        <Field name="routeId" type="String" visibility="private"/>
+        <Field name="operatorName" type="String" visibility="private"/>
+        <Field name="rateId" type="String" visibility="private"/>
+        <Field name="queueSize" type="int" visibility="private"/>
+        <Field name="globalFare" type="double" visibility="private"/>
+        <Field name="specialFare" type="double" visibility="private"/>
+        <Field name="availability" type="boolean" visibility="private"/>
+        <Field name="disabled" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="checkpointId"/>
+          <Argument type="String" name="routeId"/>
+          <Argument type="String" name="operatorName"/>
+          <Argument type="String" name="rateId"/>
+          <Argument type="int" name="queueSize"/>
+          <Argument type="double" name="globalFare"/>
+          <Argument type="double" name="specialFare"/>
+          <Argument type="boolean" name="availability"/>
+          <Argument type="boolean" name="disabled"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getCheckpointId" returnType="String" visibility="public"/>
+        <Method name="setCheckpointId" returnType="void" visibility="public">
+          <Argument type="String" name="checkpointId"/>
+        </Method>
+        <Method name="getRouteId" returnType="String" visibility="public"/>
+        <Method name="setRouteId" returnType="void" visibility="public">
+          <Argument type="String" name="routeId"/>
+        </Method>
+        <Method name="getOperatorName" returnType="String" visibility="public"/>
+        <Method name="setOperatorName" returnType="void" visibility="public">
+          <Argument type="String" name="operatorName"/>
+        </Method>
+        <Method name="getQueueSize" returnType="int" visibility="public"/>
+        <Method name="setQueueSize" returnType="void" visibility="public">
+          <Argument type="int" name="queueSize"/>
+        </Method>
+        <Method name="getGlobalFare" returnType="double" visibility="public"/>
+        <Method name="setGlobalFare" returnType="void" visibility="public">
+          <Argument type="double" name="globalFare"/>
+        </Method>
+        <Method name="getSpecialFare" returnType="double" visibility="public"/>
+        <Method name="setSpecialFare" returnType="void" visibility="public">
+          <Argument type="double" name="specialFare"/>
+        </Method>
+        <Method name="isAvailability" returnType="boolean" visibility="public"/>
+        <Method name="setAvailability" returnType="void" visibility="public">
+          <Argument type="boolean" name="availability"/>
+        </Method>
+        <Method name="isDisabled" returnType="boolean" visibility="public"/>
+        <Method name="setDisabled" returnType="void" visibility="public">
+          <Argument type="boolean" name="disabled"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Rate" package="packagedelivery.DummyClasses" visibility="public" xPosition="1791.0" yPosition="278.0">
+      <Fields>
+        <Field name="rateId" type="String" visibility="private"/>
+        <Field name="globalFare" type="double" visibility="private"/>
+        <Field name="weightFare" type="double" visibility="private"/>
+        <Field name="priorizationFare" type="double" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="rateId"/>
+          <Argument type="double" name="globalFare"/>
+          <Argument type="double" name="weightFare"/>
+          <Argument type="double" name="priorizationFare"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getRateId" returnType="String" visibility="public"/>
+        <Method name="setRateId" returnType="void" visibility="public">
+          <Argument type="String" name="rateId"/>
+        </Method>
+        <Method name="getGlobalFare" returnType="double" visibility="public"/>
+        <Method name="setGlobalFare" returnType="void" visibility="public">
+          <Argument type="double" name="globalFare"/>
+        </Method>
+        <Method name="getWeightFare" returnType="double" visibility="public"/>
+        <Method name="setWeightFare" returnType="void" visibility="public">
+          <Argument type="double" name="weightFare"/>
+        </Method>
+        <Method name="getPriorizationFare" returnType="double" visibility="public"/>
+        <Method name="setPriorizationFare" returnType="void" visibility="public">
+          <Argument type="double" name="priorizationFare"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Destination" package="packagedelivery.DummyClasses" visibility="public" xPosition="2092.0" yPosition="777.0">
+      <Fields>
+        <Field name="destinationId" type="String" visibility="private"/>
+        <Field name="fee" type="double" visibility="private"/>
+        <Field name="profit" type="double" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="destinationId"/>
+          <Argument type="double" name="fee"/>
+          <Argument type="double" name="profit"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="destinationId"/>
+          <Argument type="double" name="fee"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getDestinationId" returnType="String" visibility="public"/>
+        <Method name="setDestinationId" returnType="void" visibility="public">
+          <Argument type="String" name="destinationId"/>
+        </Method>
+        <Method name="getFee" returnType="double" visibility="public"/>
+        <Method name="setFee" returnType="void" visibility="public">
+          <Argument type="double" name="fee"/>
+        </Method>
+        <Method name="getProfit" returnType="double" visibility="public"/>
+        <Method name="setProfit" returnType="void" visibility="public">
+          <Argument type="double" name="profit"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="User" package="packagedelivery.DummyClasses" visibility="public" xPosition="1998.0" yPosition="435.0">
+      <Fields>
+        <Field name="username" type="String" visibility="private"/>
+        <Field name="name" type="String" visibility="private"/>
+        <Field name="lastName" type="String" visibility="private"/>
+        <Field name="password" type="String" visibility="private"/>
+        <Field name="role" type="String" visibility="private"/>
+        <Field name="availability" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="username"/>
+          <Argument type="String" name="name"/>
+          <Argument type="String" name="lastName"/>
+          <Argument type="String" name="password"/>
+          <Argument type="String" name="role"/>
+          <Argument type="boolean" name="availability"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getUsername" returnType="String" visibility="public"/>
+        <Method name="setUsername" returnType="void" visibility="public">
+          <Argument type="String" name="username"/>
+        </Method>
+        <Method name="getName" returnType="String" visibility="public"/>
+        <Method name="setName" returnType="void" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+        <Method name="getLastName" returnType="String" visibility="public"/>
+        <Method name="setLastName" returnType="void" visibility="public">
+          <Argument type="String" name="lastName"/>
+        </Method>
+        <Method name="getPassword" returnType="String" visibility="public"/>
+        <Method name="setPassword" returnType="void" visibility="public">
+          <Argument type="String" name="password"/>
+        </Method>
+        <Method name="getRole" returnType="String" visibility="public"/>
+        <Method name="setRole" returnType="void" visibility="public">
+          <Argument type="String" name="role"/>
+        </Method>
+        <Method name="isAvailability" returnType="boolean" visibility="public"/>
+        <Method name="setAvailability" returnType="void" visibility="public">
+          <Argument type="boolean" name="availability"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Storage" package="packagedelivery.DummyClasses" visibility="public" xPosition="20.0" yPosition="412.0">
+      <Fields>
+        <Field name="packageId" type="String" visibility="private"/>
+        <Field name="date" type="LocalDate" visibility="private"/>
+        <Field name="priorized" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="packageId"/>
+          <Argument type="LocalDate" name="date"/>
+          <Argument type="boolean" name="priorized"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getPackageId" returnType="String" visibility="public"/>
+        <Method name="setPackageId" returnType="void" visibility="public">
+          <Argument type="String" name="packageId"/>
+        </Method>
+        <Method name="getDate" returnType="LocalDate" visibility="public"/>
+        <Method name="setDate" returnType="void" visibility="public">
+          <Argument type="LocalDate" name="date"/>
+        </Method>
+        <Method name="isPriorized" returnType="boolean" visibility="public"/>
+        <Method name="setPriorized" returnType="void" visibility="public">
+          <Argument type="boolean" name="priorized"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Register" package="packagedelivery.DummyClasses" visibility="public" xPosition="20.0" yPosition="918.0">
+      <Fields>
+        <Field name="packageId" type="String" visibility="private"/>
+        <Field name="checkpointId" type="String" visibility="private"/>
+        <Field name="hours" type="int" visibility="private"/>
+        <Field name="date" type="LocalDate" visibility="private"/>
+        <Field name="charge" type="double" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="packageId"/>
+          <Argument type="String" name="checkpointId"/>
+          <Argument type="int" name="hours"/>
+          <Argument type="LocalDate" name="date"/>
+          <Argument type="double" name="charge"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getPackageId" returnType="String" visibility="public"/>
+        <Method name="setPackageId" returnType="void" visibility="public">
+          <Argument type="String" name="packageId"/>
+        </Method>
+        <Method name="getCheckpointId" returnType="String" visibility="public"/>
+        <Method name="setCheckpointId" returnType="void" visibility="public">
+          <Argument type="String" name="checkpointId"/>
+        </Method>
+        <Method name="getHours" returnType="int" visibility="public"/>
+        <Method name="setHours" returnType="void" visibility="public">
+          <Argument type="int" name="hours"/>
+        </Method>
+        <Method name="getDate" returnType="LocalDate" visibility="public"/>
+        <Method name="setDate" returnType="void" visibility="public">
+          <Argument type="LocalDate" name="date"/>
+        </Method>
+        <Method name="getCharge" returnType="double" visibility="public"/>
+        <Method name="setCharge" returnType="void" visibility="public">
+          <Argument type="double" name="charge"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Bill" package="packagedelivery.DummyClasses" visibility="public" xPosition="629.0" yPosition="918.0">
+      <Fields>
+        <Field name="billNumber" type="String" visibility="private"/>
+        <Field name="clientNit" type="String" visibility="private"/>
+        <Field name="name" type="String" visibility="private"/>
+        <Field name="address" type="String" visibility="private"/>
+        <Field name="date" type="LocalDate" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="billNumber"/>
+          <Argument type="String" name="clientNit"/>
+          <Argument type="String" name="name"/>
+          <Argument type="String" name="address"/>
+          <Argument type="LocalDate" name="date"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getName" returnType="String" visibility="public"/>
+        <Method name="setName" returnType="void" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+        <Method name="getAddress" returnType="String" visibility="public"/>
+        <Method name="setAddress" returnType="void" visibility="public">
+          <Argument type="String" name="address"/>
+        </Method>
+        <Method name="getDate" returnType="LocalDate" visibility="public"/>
+        <Method name="setDate" returnType="void" visibility="public">
+          <Argument type="LocalDate" name="date"/>
+        </Method>
+        <Method name="getBillNumber" returnType="String" visibility="public"/>
+        <Method name="setBillNumber" returnType="void" visibility="public">
+          <Argument type="String" name="billNumber"/>
+        </Method>
+        <Method name="getClientNit" returnType="String" visibility="public"/>
+        <Method name="setClientNit" returnType="void" visibility="public">
+          <Argument type="String" name="clientNit"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Route" package="packagedelivery.DummyClasses" visibility="public" xPosition="1049.0" yPosition="901.0">
+      <Fields>
+        <Field name="routeId" type="String" visibility="private"/>
+        <Field name="destinationId" type="String" visibility="private"/>
+        <Field name="availability" type="boolean" visibility="private"/>
+        <Field name="disabled" type="boolean" visibility="private"/>
+        <Field name="packagesInRoute" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="routeId"/>
+          <Argument type="String" name="destinationId"/>
+          <Argument type="boolean" name="availability"/>
+          <Argument type="boolean" name="disabled"/>
+          <Argument type="int" name="packagesInRoute"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="routeId"/>
+          <Argument type="String" name="destinationId"/>
+          <Argument type="boolean" name="availability"/>
+          <Argument type="boolean" name="disabled"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getRouteId" returnType="String" visibility="public"/>
+        <Method name="setRouteId" returnType="void" visibility="public">
+          <Argument type="String" name="routeId"/>
+        </Method>
+        <Method name="getDestinationId" returnType="String" visibility="public"/>
+        <Method name="setDestinationId" returnType="void" visibility="public">
+          <Argument type="String" name="destinationId"/>
+        </Method>
+        <Method name="isAvailability" returnType="boolean" visibility="public"/>
+        <Method name="setAvailability" returnType="void" visibility="public">
+          <Argument type="boolean" name="availability"/>
+        </Method>
+        <Method name="isDisabled" returnType="boolean" visibility="public"/>
+        <Method name="setDisabled" returnType="void" visibility="public">
+          <Argument type="boolean" name="disabled"/>
+        </Method>
+        <Method name="getPackagesInRoute" returnType="int" visibility="public"/>
+        <Method name="setPackagesInRoute" returnType="void" visibility="public">
+          <Argument type="int" name="packagesInRoute"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Client" package="packagedelivery.DummyClasses" visibility="public" xPosition="1490.0" yPosition="743.0">
+      <Fields>
+        <Field name="nit" type="String" visibility="private"/>
+        <Field name="name" type="String" visibility="private"/>
+        <Field name="lastName" type="String" visibility="private"/>
+        <Field name="address" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nit"/>
+          <Argument type="String" name="name"/>
+          <Argument type="String" name="lastName"/>
+          <Argument type="String" name="address"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getNit" returnType="String" visibility="public"/>
+        <Method name="setNit" returnType="void" visibility="public">
+          <Argument type="String" name="nit"/>
+        </Method>
+        <Method name="getName" returnType="String" visibility="public"/>
+        <Method name="setName" returnType="void" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+        <Method name="getLastName" returnType="String" visibility="public"/>
+        <Method name="setLastName" returnType="void" visibility="public">
+          <Argument type="String" name="lastName"/>
+        </Method>
+        <Method name="getAddress" returnType="String" visibility="public"/>
+        <Method name="setAddress" returnType="void" visibility="public">
+          <Argument type="String" name="address"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="checkpoints" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DummyClasses.Checkpoint" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Checkpoint&gt;"/>
+    <UseRelation source="packagedelivery.DBmanagers.BillDBManager" target="packagedelivery.DummyClasses.Bill" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="packagedelivery.DBmanagers.RouteDBManager" target="packagedelivery.DummyClasses.Route" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="storages" source="packagedelivery.DBmanagers.StorageDBManager" target="packagedelivery.DummyClasses.Storage" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Storage&gt;"/>
+    <UseRelation source="packagedelivery.DBmanagers.CheckpointDBManager" target="packagedelivery.DummyClasses.Checkpoint" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="storages" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DummyClasses.Storage" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Storage&gt;"/>
+    <HasRelation name="users" source="packagedelivery.DBmanagers.UserDBManager" target="packagedelivery.DummyClasses.User" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;User&gt;"/>
+    <HasRelation name="packageManager" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DBmanagers.PackageDBManager" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="packagedelivery.DBmanagers.DBManager" target="packagedelivery.DummyClasses.Rate" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="checkpointManager" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DBmanagers.CheckpointDBManager" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="checkpoints" source="packagedelivery.DBmanagers.CheckpointDBManager" target="packagedelivery.DummyClasses.Checkpoint" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Checkpoint&gt;"/>
+    <HasRelation name="routes" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DummyClasses.Route" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Route&gt;"/>
+    <UseRelation source="packagedelivery.Storage.StorageManager" target="packagedelivery.DummyClasses.Storage" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="manager" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DBmanagers.DBManager" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="clients" source="packagedelivery.DBmanagers.ClientDBManager" target="packagedelivery.DummyClasses.Client" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Client&gt;"/>
+    <HasRelation name="registerManager" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DBmanagers.RegisterDBManager" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="storageManager" source="packagedelivery.Storage.StorageManager" target="packagedelivery.DBmanagers.StorageDBManager" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="packagedelivery.DBmanagers.DestinationDBManager" target="packagedelivery.DummyClasses.Destination" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="packagedelivery.DBmanagers.ClientDBManager" target="packagedelivery.DummyClasses.Client" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="packagedelivery.DBmanagers.RegisterDBManager" target="packagedelivery.DummyClasses.Register" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="destinations" source="packagedelivery.DBmanagers.DestinationDBManager" target="packagedelivery.DummyClasses.Destination" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Destination&gt;"/>
+    <HasRelation name="routes" source="packagedelivery.DBmanagers.RouteDBManager" target="packagedelivery.DummyClasses.Route" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Route&gt;"/>
+    <UseRelation source="packagedelivery.DBmanagers.StorageDBManager" target="packagedelivery.DummyClasses.Storage" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="bills" source="packagedelivery.DBmanagers.BillDBManager" target="packagedelivery.DummyClasses.Bill" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Bill&gt;"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

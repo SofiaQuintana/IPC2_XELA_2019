@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.observablecollections.ObservableList;
+import packagedelivery.DBmanagers.DBManager;
 import packagedelivery.DBmanagers.DestinationDBManager;
 import packagedelivery.DummyClasses.Destination;
 
@@ -27,6 +28,7 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
     private List<Destination> destinations;
     private ObservableList<Destination> destinationObservable;
     private DestinationDBManager destinationManager;
+    private DBManager manager;
     private static final String DELETE_QUERY = "DELETE FROM Destination WHERE IdDestination = ";
     private static final String GENERAL_QUERY = "SELECT * FROM Destination;";
     private static final String ASC_BY_DESTINATION_QUERY = "SELECT * FROM Destination ORDER BY IdDestination ASC";
@@ -40,6 +42,7 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
         initComponents();
         this.connection = connection;
         destinationManager = new DestinationDBManager(connection);
+        manager = new DBManager(connection);
         refreshObservableList(destinationManager.getElements(GENERAL_QUERY));
     }
 
@@ -80,6 +83,7 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
         jLabel2.setText("jLabel2");
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -92,7 +96,7 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
         elementText.setText("Por Elemento:");
 
         searchingComboBox.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 14)); // NOI18N
-        searchingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---vacio---", "Username", "Name", "LastName", "Role", "Availability" }));
+        searchingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---vacio---", "IdDestination", "Fee", "Profit", " ", " " }));
 
         orderText.setText("Orden:");
 
@@ -222,12 +226,9 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
                     .addGroup(creatStuffPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(creatStuffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(creatStuffPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addContainerGap(71, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, creatStuffPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(creatStuffPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(creatStuffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -235,7 +236,7 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
                             .addGroup(creatStuffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(destinationField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(feeField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 16, Short.MAX_VALUE))))
         );
         creatStuffPanelLayout.setVerticalGroup(
             creatStuffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,7 +369,7 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
         } else {
             String selectedDestination = getSelectedDestination(selectedRow);
             this.destination = destinationManager.getDestinationInList(selectedDestination);
-            update = new UpdateDialog(true, connection, null, this.destination);
+            update = new UpdateDialog(true, connection, null, this.destination, null);
             update.setVisible(true);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
@@ -397,7 +398,7 @@ public class DestinationFrame extends javax.swing.JInternalFrame {
     
       public void deleteSelectedDestination(int selectedRow) {
         String query = DELETE_QUERY + "'" + getSelectedDestination(selectedRow) + "';";
-        destinationManager.updateDestination(query);
+        manager.updateElement(query);
     }
       
     public void cleanFields() {

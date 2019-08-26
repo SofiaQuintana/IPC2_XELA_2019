@@ -17,16 +17,23 @@ public class ManagementFrame extends javax.swing.JFrame {
     private Connection connection;
     private UsersFrame userFrame;
     private DestinationFrame destinationFrame;
+    private RoutesFrame routeFrame;
+    private CheckpointFrame checkpointFrame;
+    private RateDialog rateDialog;
     /**
      * Creates new form ManagementFrame
      */
     public ManagementFrame(User user, Connection connection) {
         userFrame = new UsersFrame(connection);
         destinationFrame = new DestinationFrame(connection);
+        routeFrame = new RoutesFrame(connection);
+        checkpointFrame = new CheckpointFrame(connection);
         initComponents();
         this.connection = connection;
         this.desktopPane.add(userFrame);
         this.desktopPane.add(destinationFrame);
+        this.desktopPane.add(routeFrame);
+        this.desktopPane.add(checkpointFrame);
     }
 
     /**
@@ -42,9 +49,11 @@ public class ManagementFrame extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         routeMenu = new javax.swing.JMenu();
         userItem = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        routeItem = new javax.swing.JMenuItem();
         destinationMenu = new javax.swing.JMenuItem();
-        checkpointMenu = new javax.swing.JMenu();
+        checkpointItem = new javax.swing.JMenuItem();
+        tarifaMenu = new javax.swing.JMenu();
+        tarifarioItem = new javax.swing.JMenuItem();
         ReportesMenu = new javax.swing.JMenu();
         otherMenu = new javax.swing.JMenu();
         logoutItem = new javax.swing.JMenuItem();
@@ -73,8 +82,13 @@ public class ManagementFrame extends javax.swing.JFrame {
         });
         routeMenu.add(userItem);
 
-        jMenuItem1.setText("Ruta");
-        routeMenu.add(jMenuItem1);
+        routeItem.setText("Ruta");
+        routeItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                routeItemActionPerformed(evt);
+            }
+        });
+        routeMenu.add(routeItem);
 
         destinationMenu.setText("Destino");
         destinationMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -84,10 +98,27 @@ public class ManagementFrame extends javax.swing.JFrame {
         });
         routeMenu.add(destinationMenu);
 
+        checkpointItem.setText("Punto de control");
+        checkpointItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkpointItemActionPerformed(evt);
+            }
+        });
+        routeMenu.add(checkpointItem);
+
         menuBar.add(routeMenu);
 
-        checkpointMenu.setText("Checkpoint");
-        menuBar.add(checkpointMenu);
+        tarifaMenu.setText("Tarifas");
+
+        tarifarioItem.setText("Tarifario");
+        tarifarioItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tarifarioItemActionPerformed(evt);
+            }
+        });
+        tarifaMenu.add(tarifarioItem);
+
+        menuBar.add(tarifaMenu);
 
         ReportesMenu.setText("Reportes");
         menuBar.add(ReportesMenu);
@@ -143,17 +174,37 @@ public class ManagementFrame extends javax.swing.JFrame {
         destinationFrame.setVisible(true);
     }//GEN-LAST:event_destinationMenuActionPerformed
 
+    private void routeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_routeItemActionPerformed
+        // TODO add your handling code here:
+        routeFrame.setVisible(true);
+        routeFrame.setComboModel();
+    }//GEN-LAST:event_routeItemActionPerformed
+
+    private void tarifarioItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarifarioItemActionPerformed
+        // TODO add your handling code here:
+        rateDialog = new RateDialog(true, this.connection);
+        rateDialog.setVisible(true);
+    }//GEN-LAST:event_tarifarioItemActionPerformed
+
+    private void checkpointItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkpointItemActionPerformed
+        // TODO add your handling code here:
+        checkpointFrame.setVisible(true);
+        checkpointFrame.setComboBoxesModel();
+    }//GEN-LAST:event_checkpointItemActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu ReportesMenu;
-    private javax.swing.JMenu checkpointMenu;
+    private javax.swing.JMenuItem checkpointItem;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem destinationMenu;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem logoutItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu otherMenu;
+    private javax.swing.JMenuItem routeItem;
     private javax.swing.JMenu routeMenu;
+    private javax.swing.JMenu tarifaMenu;
+    private javax.swing.JMenuItem tarifarioItem;
     private javax.swing.JMenuItem userItem;
     // End of variables declaration//GEN-END:variables
 }

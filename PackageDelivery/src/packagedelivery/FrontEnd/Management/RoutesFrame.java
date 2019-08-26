@@ -8,10 +8,15 @@ package packagedelivery.FrontEnd.Management;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.observablecollections.ObservableList;
+import packagedelivery.DBmanagers.DBManager;
+import packagedelivery.DBmanagers.DestinationDBManager;
 import packagedelivery.DBmanagers.RouteDBManager;
+import packagedelivery.DummyClasses.Destination;
 import packagedelivery.DummyClasses.Route;
 
 /**
@@ -20,9 +25,15 @@ import packagedelivery.DummyClasses.Route;
  */
 public class RoutesFrame extends javax.swing.JInternalFrame {
     private Connection connection;
+    private Route route;
     private List<Route> routes;
+    private List<Destination> destinations;
     private ObservableList<Route> observableRoutes;
+    private DBManager manager;
     private RouteDBManager routeManager;
+    private DestinationDBManager destinationManager;
+    private static final String DESACTIVATE_QUERY = "UPDATE Route SET Disabled = 1 WHERE IdRoute = ";
+    private static final String DESTINATION_QUERY = "SELECT * FROM Destination;";
     private static final String GENERAL_QUERY = "SELECT * FROM Route;";
     private static final String ASC_BY_DESTINATION_QUERY = "SELECT * FROM Route ORDER BY Destination_Id ASC";
     private static final String DESC_BY_DESTINATION_QUERY = "SELECT * FROM Route ORDER BY Destination_Id DESC";
@@ -31,12 +42,16 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
      * Creates new form RoutesFrame
      */
     public RoutesFrame(Connection connection) {
+        destinations = new ArrayList<>();
         routes = new ArrayList<>();
         observableRoutes = ObservableCollections.observableList(routes);
         initComponents();
         this.connection = connection;
         routeManager = new RouteDBManager(connection);
+        manager = new DBManager(connection);
+        destinationManager = new DestinationDBManager(connection);
         refreshObservableList(routeManager.getRoutes(GENERAL_QUERY));
+        setComboModel();
     }
 
     /**
@@ -57,10 +72,9 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
         separator = new javax.swing.JSeparator();
         routesPanel = new javax.swing.JTabbedPane();
         tablePanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollPanel = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         desactivateButton = new javax.swing.JButton();
-        updateButton = new javax.swing.JButton();
         informationLabel = new javax.swing.JLabel();
         createPanel = new javax.swing.JPanel();
         creatStuffPanel = new javax.swing.JPanel();
@@ -72,6 +86,7 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
         orderText = new javax.swing.JLabel();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -84,7 +99,7 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
         elementText.setText("Por Elemento:");
 
         searchingComboBox.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 14)); // NOI18N
-        searchingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---vacio---", "Username", "Name", "LastName", "Role", "Availability" }));
+        searchingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---vacio---", "IdRoute", "Destination_Id", "Disabled", "PackagesInRoute", " " }));
 
         orderComboBox.setForeground(new java.awt.Color(153, 153, 153));
         orderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-vacio-", "ASC", "DESC" }));
@@ -104,22 +119,18 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${routeId}"));
         columnBinding.setColumnName("Route Id");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${destinationId}"));
         columnBinding.setColumnName("Destination Id");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${packagesInRoute}"));
         columnBinding.setColumnName("Packages In Route");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${disabled}"));
         columnBinding.setColumnName("Disabled");
         columnBinding.setColumnClass(Boolean.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(table);
+        scrollPanel.setViewportView(table);
 
         desactivateButton.setBackground(new java.awt.Color(153, 153, 153));
         desactivateButton.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 14)); // NOI18N
@@ -128,16 +139,6 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
         desactivateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 desactivateButtonActionPerformed(evt);
-            }
-        });
-
-        updateButton.setBackground(new java.awt.Color(153, 153, 153));
-        updateButton.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 14)); // NOI18N
-        updateButton.setForeground(new java.awt.Color(102, 102, 102));
-        updateButton.setText("Actualizar Datos");
-        updateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateButtonActionPerformed(evt);
             }
         });
 
@@ -152,12 +153,10 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
             .addGroup(tablePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
                         .addComponent(informationLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(updateButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(desactivateButton)))
                 .addContainerGap())
         );
@@ -165,13 +164,12 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tablePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(desactivateButton)
-                    .addComponent(updateButton)
                     .addComponent(informationLabel))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 41, Short.MAX_VALUE))
         );
 
         routesPanel.addTab("Rutas", tablePanel);
@@ -263,9 +261,13 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
                 .addComponent(elementText)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchingComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addComponent(orderText)
-                .addGap(199, 199, 199))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(orderComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -274,33 +276,26 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
                             .addGap(1, 1, 1)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(separator)
-                                .addComponent(routesPanel)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(orderComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(searchingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(routesPanel)))
                         .addComponent(searchingText))
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchingComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(elementText)
                     .addComponent(orderText)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchingComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(elementText)))
-                .addContainerGap(613, Short.MAX_VALUE))
+                    .addComponent(orderComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchingButton))
+                .addContainerGap(612, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(searchingText)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchingButton)
-                        .addComponent(orderComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGap(47, 47, 47)
                     .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(routesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -329,52 +324,75 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
             String order = orderComboBox.getModel().getSelectedItem().toString();
             String query = SELECTION + data + " " +order;
             refreshObservableList(routeManager.getRoutes(query));
+        } else if(searchingComboBox.getModel().getSelectedItem().equals("---vacio---") &&
+                orderComboBox.getModel().getSelectedItem().equals("-vacio-")) {
+            refreshObservableList(routeManager.getRoutes(GENERAL_QUERY));
         }
     }//GEN-LAST:event_searchingButtonActionPerformed
 
     private void desactivateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desactivateButtonActionPerformed
-        // TODO add your handling code here:
-//        int selectedRow = table.getSelectedRow();
-//        if(selectedRow == -1) {
-//            JOptionPane.showMessageDialog(this, "Seleccione una fila...", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            desactivateSelectedUser(selectedRow);
-//            refreshObservableList(userData.getUsers(generalQuery));
-//            JOptionPane.showMessageDialog(this, "Usuario desactivado con exito!", "Informacion", JOptionPane.INFORMATION_MESSAGE);
-//        }
+//         TODO add your handling code here:
+        int selectedRow = table.getSelectedRow();
+        if(selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila...", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            getSelectedRoute(selectedRow);
+            if(this.route.getPackagesInRoute() == 0) {
+                desactivateSelectedRoute(selectedRow);
+                refreshObservableList(routeManager.getRoutes(GENERAL_QUERY));
+                JOptionPane.showMessageDialog(this, "Ruta desactivada con exito!", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se puede desactivar dicha ruta, ya que contiene paquetes.",
+                        "Informacion", JOptionPane.INFORMATION_MESSAGE);
+            }           
+        }
     }//GEN-LAST:event_desactivateButtonActionPerformed
-
-    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
-//        int selectedRow = table.getSelectedRow();
-//        if(selectedRow == -1) {
-//            JOptionPane.showMessageDialog(this, "Seleccione una fila...", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            getSelectedUser(selectedRow);
-//            update = new UpdateDialog(true, connection, this.user);
-//            update.setVisible(true);
-//        }
-    }//GEN-LAST:event_updateButtonActionPerformed
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here:
-//        if(idField.getText().isEmpty() || nameField.getText().isEmpty() || lastNameField.getText().isEmpty()
-//            || passwordField.getText().isEmpty() || roleCombo.getModel().getSelectedItem().equals("------VACIO------")) {
-//            JOptionPane.showMessageDialog(this, "Ingrese todos los campos...", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            try {
-//                userData.addUser(idField.getText(), nameField.getText(), lastNameField.getText(),
-//                    passwordField.getText(), roleCombo.getModel().getSelectedItem().toString(), true);
-//                cleanFields();
-//                JOptionPane.showMessageDialog(this, "Usuario creado con exito...", "Informacion", JOptionPane.INFORMATION_MESSAGE);
-//                refreshObservableList(userData.getUsers(generalQuery));
-//            } catch(Exception e) {
-//                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//
-//        }
+        if(idField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese todos los campos...", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                routeManager.addRoute(idField.getText(), 
+                        destinationComboBox.getModel().getSelectedItem().toString(), true, false, 0);
+                cleanFields();
+                JOptionPane.showMessageDialog(this, "Ruta creada con exito...", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                refreshObservableList(routeManager.getRoutes(GENERAL_QUERY));
+            } catch(Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
     }//GEN-LAST:event_createButtonActionPerformed
 
+    public void getSelectedRoute(int selectedRow) {
+        String selectedRoute = table.getModel().getValueAt(selectedRow, 0).toString();
+        this.route = routeManager.getRouteInList(selectedRoute);
+    }
+    public void desactivateSelectedRoute(int selectedRow) {
+        String selectedRoute = table.getModel().getValueAt(selectedRow, 0).toString();
+        String query = DESACTIVATE_QUERY + "'"+selectedRoute+"';";
+        manager.updateElement(query);
+    }
+    
+    public void cleanFields() {
+        idField.setText("");
+        setComboModel();
+    }
+    
+    public void setComboModel() {
+        this.destinations = destinationManager.getElements(DESTINATION_QUERY);
+        Vector destinationId = new Vector();
+        Destination destination;
+        for (int i = 0; i < this.destinations.size(); i++) {
+            destination = this.destinations.get(i);            
+            destinationId.add(destination.getDestinationId());
+        }
+        DefaultComboBoxModel model = new DefaultComboBoxModel(destinationId);
+        destinationComboBox.setModel(model);
+    }
+    
     public void refreshObservableList(List<Route> list) {
         this.observableRoutes.clear();
         this.observableRoutes.addAll(list);
@@ -398,18 +416,17 @@ public class RoutesFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel elementText;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel informationLabel;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel nameText;
     private javax.swing.JComboBox<String> orderComboBox;
     private javax.swing.JLabel orderText;
     private javax.swing.JTabbedPane routesPanel;
+    private javax.swing.JScrollPane scrollPanel;
     private javax.swing.JButton searchingButton;
     private javax.swing.JComboBox<String> searchingComboBox;
     private javax.swing.JLabel searchingText;
     private javax.swing.JSeparator separator;
     private javax.swing.JTable table;
     private javax.swing.JPanel tablePanel;
-    private javax.swing.JButton updateButton;
     private javax.swing.JLabel userText;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

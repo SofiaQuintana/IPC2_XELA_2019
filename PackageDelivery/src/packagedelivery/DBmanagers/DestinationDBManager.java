@@ -79,14 +79,5 @@ public class DestinationDBManager {
             throw new Exception("Este destino ya existe");
         }
     }
-     
-     public void updateDestination(String query) {
-        try {
-            PreparedStatement object = connection.prepareStatement(query);
-            object.execute();    
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
     
 }

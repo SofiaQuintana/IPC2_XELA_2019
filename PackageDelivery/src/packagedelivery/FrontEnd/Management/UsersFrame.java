@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.observablecollections.ObservableList;
+import packagedelivery.DBmanagers.DBManager;
 import packagedelivery.DBmanagers.UserDBManager;
 import packagedelivery.DummyClasses.User;
 
@@ -26,6 +27,7 @@ public class UsersFrame extends javax.swing.JInternalFrame {
     private List<User> users;
     private ObservableList<User> userObservable;
     private UserDBManager userData;
+    private DBManager manager;
     private Connection connection;
     private UpdateDialog update;
     private User user;
@@ -39,6 +41,7 @@ public class UsersFrame extends javax.swing.JInternalFrame {
         initComponents();
         this.connection = connection;
         userData = new UserDBManager(connection);
+        manager = new DBManager(connection);
         refreshObservableList(userData.getUsers(generalQuery));
     }
 
@@ -81,9 +84,11 @@ public class UsersFrame extends javax.swing.JInternalFrame {
         orderText = new javax.swing.JLabel();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Usuarios");
 
         searchingButton.setBackground(new java.awt.Color(153, 153, 153));
         searchingButton.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 14)); // NOI18N
@@ -403,7 +408,7 @@ public class UsersFrame extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Seleccione una fila...", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             getSelectedUser(selectedRow);
-            update = new UpdateDialog(true, connection, this.user, null);
+            update = new UpdateDialog(true, connection, this.user, null, null);
             update.setVisible(true);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
@@ -416,7 +421,7 @@ public class UsersFrame extends javax.swing.JInternalFrame {
     public void desactivateSelectedUser(int selectedRow) {
         String selectedUser = table.getModel().getValueAt(selectedRow, 0).toString();
         String query = desactivateQuery + "'"+selectedUser+"';";
-        userData.updateInfoUser(query);
+        manager.updateElement(query);
     }
     
     public void cleanFields() {

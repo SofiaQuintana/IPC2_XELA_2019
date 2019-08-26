@@ -1,14 +1,16 @@
 
 package packagedelivery.FrontEnd;
 
+import packagedelivery.FrontEnd.Operating.OperatorFrame;
+import packagedelivery.FrontEnd.CheckIn.ReceptionistFrame;
 import packagedelivery.FrontEnd.Management.ManagementFrame;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import packagedelivery.DBmanagers.UserDBManager;
 import packagedelivery.DummyClasses.User;
+import packagedelivery.Storage.StorageManager;
 
 /**
  *
@@ -22,6 +24,7 @@ public class LogInDialog extends javax.swing.JDialog {
     private ManagementFrame management;
     private OperatorFrame operator;
     private ReceptionistFrame recepcionist;
+    private StorageManager storage;
     private Connection connection;
     /**
      * Creates new form LogInDialog
@@ -32,6 +35,7 @@ public class LogInDialog extends javax.swing.JDialog {
         userInformation = new UserDBManager(connection);
         this.setModal(modal);
         this.connection = connection;
+        storage = new StorageManager(connection);
     }
 
     /**
@@ -147,6 +151,7 @@ public class LogInDialog extends javax.swing.JDialog {
             } catch(Exception e) {
                 System.out.println(e.getMessage());
             }
+            storage.storage();
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
