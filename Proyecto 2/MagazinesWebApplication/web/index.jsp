@@ -16,5 +16,14 @@
     <body background="./background.jpg">
        <%@include file="header-form.html"%>
        <%@include file="scripts.html"%> 
+       
+       <div class="card border-dark mb-3" id="card">
+            <div class="card-body">
+                <div> 
+                    <h1 class="title">Inicie sesion, para poder acceder a nuestras revistas</h1>
+                </div>
+            </div>   
+       </div>   
+                
     </body>
 </html>

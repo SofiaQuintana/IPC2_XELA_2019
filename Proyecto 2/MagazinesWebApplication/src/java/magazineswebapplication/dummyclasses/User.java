@@ -27,6 +27,12 @@ public class User {
         this.password = request.getParameter("password");
         this.type = request.getParameter("type");
     }
+    
+    public User(HttpServletRequest request, String type) {
+        this.username = request.getParameter("username");
+        this.password = request.getParameter("password");
+        this.type = type;
+    }
 
     public String getUsername() {
         return username;

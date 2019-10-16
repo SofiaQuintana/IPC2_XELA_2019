@@ -29,11 +29,11 @@ import magazineswebapplication.exceptions.UserException;
 
 @WebServlet("/UserRegisterController")
 public class UserRegisterController extends HttpServlet{
+    private DataBaseController dbConnection = new DataBaseController();
     private Connection connection;
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DataBaseController dbConnection = new DataBaseController();
         this.connection = dbConnection.connectToDataBase();
         User user = new User(request);
         ProfileDBManager profile = new ProfileDBManager(this.connection);
@@ -53,6 +53,22 @@ public class UserRegisterController extends HttpServlet{
             dbConnection.updateElement("DELETE FROM User WHERE Username = '" + user.getUsername() + "';");
             request.setAttribute("exception", true);
             RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.connection = dbConnection.connectToDataBase();
+        User user = new User(request, "Manager");
+        UserDBManager userRegister = new UserDBManager(connection);
+        try {
+            userRegister.addUser(user);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("create-manager.jsp");
+            dispatcher.forward(request, response);
+        } catch(UserException e) {
+            request.setAttribute("error", true);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("create-manager.jsp");
             dispatcher.forward(request, response);
         }
     }

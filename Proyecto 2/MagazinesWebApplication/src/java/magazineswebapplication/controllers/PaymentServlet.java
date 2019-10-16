@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -37,7 +38,6 @@ public class PaymentServlet extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.connection = dataBase.connectToDataBase();
         SubscriptionDBManager subscriptions = new SubscriptionDBManager(this.connection);
-        PostMagazineDBManager data = new PostMagazineDBManager(this.connection);
         List<Magazine> magazines = (List<Magazine>) request.getSession().getAttribute("selectedMagazine");
         List<Post> posts = (List<Post>) request.getSession().getAttribute("selectedVersion");
         try {

@@ -46,16 +46,22 @@
                           </div>
                             <input type="text" class="form-control" aria-label="Text input with checkbox" value="Seleccione para bloquear 'Comentarios'." disabled>
                         </div>
-                        
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="likes" value="true" class="custom-control-input" id="customCheck1">
-                            <label class="custom-control-label" for="customCheck1">Seleccione para bloquear 'Me gusta'.</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="likes" aria-label="Checkbox for following text input">
+                            </div>
+                          </div>
+                            <input type="text" class="form-control" aria-label="Text input with checkbox" value="Seleccione para bloquear 'Me gusta'." disabled>
                         </div>
-                        <h1 class="title"></h1>
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" name="subscriptions" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Seleccione para bloquear 'Suscripciones'.</label>
-                        </div>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="subscriptions" aria-label="Checkbox for following text input">
+                            </div>
+                          </div>
+                            <input type="text" class="form-control" aria-label="Text input with checkbox" value="Seleccione para bloquear 'Suscripciones'." disabled>
+                        </div>                       
                         <h1 class="title"></h1>
                         <button type="submit" class="btn btn-dark">Aceptar</button>
                     </div>

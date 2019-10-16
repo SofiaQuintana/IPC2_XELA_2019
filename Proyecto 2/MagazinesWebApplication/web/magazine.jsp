@@ -44,19 +44,76 @@
                         <p class="card-text">Autor: ${magazines.autor}</p>
                         <p class="card-text">Descripcion: ${magazines.description}</p>      
                         <a href="http://localhost:8080/static/PDF/${versions.username}/${versions.pdfUrl}" download>Download: ${magazines.name}</a>
-                    </div>                      
+                    </div>             
                     <div class="card-footer bg-transparent ">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Comment:</span>
+                        <h5 class="card-title">Comentarios de otros usuarios:</h5>
+                        <c:forEach var="comment" items="${requestScope.commentaries}">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"></span>
+                                </div>
+                                        <textarea class="form-control" aria-label="With textarea" disabled>
+${comment.commentaryDate} || ${comment.commentaryId} dice:
+${comment.commentary}</textarea>
                             </div>
-                                <textarea class="form-control" aria-label="With textarea"></textarea>
-                            </div>
+                            <br>
+                        </c:forEach>
+                        <c:if test="${not magazines.blockCommentary}">
+                            <form action="CommentServlet?m=${versions.idPost}" method="POST">
+                                <div class="input-group-prepend">                                                   
+                                    <h5 class="card-title">Comentar:</h5>
+                                </div>
+                                <textarea class="form-control" aria-label="With textarea" name="commentary"></textarea>
+                                <br>
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <input class="form-control" name="year" placeholder="year" aria-label="year" aria-describedby="basic-addon1">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon1">/</span>
+                                        </div>
+                                        <input class="form-control" name="month" placeholder="month" aria-label="month" aria-describedby="basic-addon1">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon1">/</span>
+                                        </div>
+                                        <input class="form-control" name="day" placeholder="day" aria-label="day" aria-describedby="basic-addon1"> 
+                                    </div>
+                                    <small class="form-text text-muted">Example: 1998/02/28</small>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-outline-light">Aceptar</button>
+                        </form>
+                        </c:if>                       
                     </div>
-                </div>               
+                </div>
             </c:forEach>
             
         </c:forEach>
         
+        <c:if test="${requestScope['Error'] != null}">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#ErrorModal').modal('show');
+                });
+            </script>
+        </c:if>
+
+        <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Ingrese correctamente la fecha.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

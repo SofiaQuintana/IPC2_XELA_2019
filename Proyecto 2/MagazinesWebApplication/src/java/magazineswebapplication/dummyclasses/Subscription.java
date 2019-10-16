@@ -34,7 +34,7 @@ public class Subscription {
     }
 
     public Subscription(HttpServletRequest request, String idPost, double charge, LocalDate date) {
-        this.subscriptionId = generateCode();   
+        this.subscriptionId = generateCode(request.getSession().getAttribute("User").toString(), idPost);   
         this.username = request.getSession().getAttribute("User").toString();
         this.idPost = idPost;
         this.charge = charge;
@@ -45,10 +45,10 @@ public class Subscription {
     
     //Genera un codigo unico mediante un UUID, debido a que es de 128 bits, se divide
     //y se toma solo la segunda parte.
-    public String generateCode() {
+    public String generateCode(String username, String idPost) {
         String generatedID = UUID.randomUUID().toString();
         String[] parts = generatedID.split("-");
-        String uniqueID = "Subscription-" + parts[1];
+        String uniqueID = "Subscription-" + username + "-" + idPost;
         return uniqueID;
     }
     

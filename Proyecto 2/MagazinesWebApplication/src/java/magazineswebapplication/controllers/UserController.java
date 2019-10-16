@@ -28,7 +28,10 @@ import magazineswebapplication.dummyclasses.User;
 public class UserController extends HttpServlet{
      private DataBaseController dataBase = new DataBaseController();
      private Connection connection;
-     private static final String SELECT_QUERY = "SELECT * FROM Magazine WHERE Charge > 0;"; //Query
+     private static final String SELECT_QUERY = "SELECT * FROM Magazine WHERE Charge > 0 AND BlockSubscription = 0;"; //Query
+     private static final String SELECT_EDITOR = "SELECT m.MagazineId, m.Name, m.Autor, m.Description, m.Price, m.BlockLike, "
+             + "m.BlockCommentary, m.BlockSubscription, m.CostoDia, m.Charge FROM Magazine m INNER JOIN Post p ON (m.MagazineId = p.MagazineId) "
+             + "WHERE m.Charge > 0 AND m.BlockSubscription = 0 AND NOT p.Username = '";
      private static final String SELECT_BY_CHARGE = "SELECT * FROM Magazine WHERE Charge = 0;";
      private static final String SELECT_PROFILE_QUERY = "SELECT * FROM Profile WHERE Username = '";
      
@@ -51,7 +54,7 @@ public class UserController extends HttpServlet{
                     dispatcher.forward(request, response);
                 break;
                 case "Editor":
-                    request.getSession().setAttribute("magazineList", magazine.getMagazines(SELECT_QUERY));
+                    request.getSession().setAttribute("magazineList", magazine.getMagazines(SELECT_EDITOR + user.getUsername() + "';"));
                     dispatcher = request.getRequestDispatcher("editor-header.jsp");
                     dispatcher.forward(request, response);
                 break;

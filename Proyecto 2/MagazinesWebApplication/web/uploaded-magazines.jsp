@@ -41,7 +41,7 @@
                 <div></div>    
                     
                     <c:forEach var="magazine" items="${requestScope.UploadedMagazines}">
-                        <form action="EditMagazineServlet?r=${subscription.magazineId}" method="POST">
+                        <form action="EditMagazineServlet?r=${magazine.magazineId}" method="POST">
                                 <div class="card text-white bg-dark mb-3" id="magazine-card">
                                     <div class="row no-gutters">
                                         <div class="col-md-4">
