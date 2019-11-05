@@ -29,28 +29,35 @@ public class SignInController extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.connection = db.DataBaseConnection();
+        this.connection = db.DataBaseConnection(); //Coneccion a la DB
         EmployeeDBManager employeeManager = new EmployeeDBManager(this.connection);
 
         try {
             User user = employeeManager.validateSignIn(request.getParameter("inputUsername"), request.getParameter("inputPassword"));
             Employee employee = (Employee) employeeManager.getSelectedEmployee(user.getUsername(), user.getCui());            
             request.getSession().setAttribute("username", user.getUsername());
-            switch(employee.getIdArea()) {
-                case 1:
+            switch(employee.getIdArea()) { //Switch encargado de redirigir segun el area del usuario que este ingresando.
+                case 1: //Administracion
                     forward(request, response, "manager-home.jsp");
                     
                 break;
-                case 2:
-                    
+                case 2: //Recursos humanos
+                    forward(request, response, "human-resources-home.jsp");
+                break;
+                case 3: //Farmaceutica
+                    forward(request, response, "pharmaceutics-home.jsp");
+                break;
+                case 4: //Recepcion
+                    forward(request, response, "receptionist-home.jsp");
                 break;
     }
 
-    } catch(Exception e) {
+        } catch(Exception e) {
 
-    }
+        }
     }
     
+    //Metodo encargado de avanzar hacia la pagina correspondiente mediante un request, response y path.
     protected void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException{
         RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(request, response); 
