@@ -11,6 +11,10 @@ import com.zofia.hospital.dummyclasses.Employee;
 import com.zofia.hospital.dummyclasses.User;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,34 +30,46 @@ import javax.servlet.http.HttpServletResponse;
 public class SignInController extends HttpServlet{
     private GeneralDBManager db = new GeneralDBManager();
     private Connection connection;
-
+    private List<String> areas = new ArrayList<>();
+    private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //Formato de fecha
+    private LocalDate date = LocalDate.now(); //Fecha del dia
+    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.connection = db.DataBaseConnection(); //Coneccion a la DB
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.connection = db.dataBaseConnection(); //Coneccion a la DB
         EmployeeDBManager employeeManager = new EmployeeDBManager(this.connection);
-
+        String dateString = String.valueOf(format.format(date));
+        request.getSession().setAttribute("date", dateString);
+        System.out.println(format.format(date));
         try {
             User user = employeeManager.validateSignIn(request.getParameter("inputUsername"), request.getParameter("inputPassword"));
-            Employee employee = (Employee) employeeManager.getSelectedEmployee(user.getUsername(), user.getCui());            
-            request.getSession().setAttribute("username", user.getUsername());
+            Employee employee = (Employee) employeeManager.getSelectedEmployee("", user.getCui());            
             switch(employee.getIdArea()) { //Switch encargado de redirigir segun el area del usuario que este ingresando.
                 case 1: //Administracion
-                    forward(request, response, "manager-home.jsp");
+                    forward(request, response, "/Hospital/jsp/manager-home.jsp");
                     
                 break;
                 case 2: //Recursos humanos
-                    forward(request, response, "human-resources-home.jsp");
+                    this.areas = employeeManager.getAreaName("SELECT Name FROM Area;");                  
+                    int areaId = employeeManager.getLatestIdArea() + 1;
+                    request.getSession().setAttribute("idArea", areaId); //Manda a la sesion el ultimo id de la lista
+                    request.getSession().setAttribute("employees", employeeManager.filterEmployees());
+                    request.getSession().setAttribute("areas", this.areas); //Manda a la sesion la lista de areas del sistema.
+                    forward(request, response, "jsp/human-resources-home.jsp");                    
                 break;
                 case 3: //Farmaceutica
-                    forward(request, response, "pharmaceutics-home.jsp");
+                    forward(request, response, "/Hospital/jsp/pharmaceutics-home.jsp");
                 break;
                 case 4: //Recepcion
-                    forward(request, response, "receptionist-home.jsp");
+                    forward(request, response, "/Hospital/jsp/receptionist-home.jsp");
                 break;
     }
 
         } catch(Exception e) {
-
+            request.setAttribute("error", true);
+            request.setAttribute("message", e.getMessage()); //obtiene el mensaje del error y lo manda al frontEnd.
+            forward(request, response, "index.jsp");
+            
         }
     }
     

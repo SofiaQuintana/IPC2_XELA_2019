@@ -1,6 +1,6 @@
 <%-- 
-    Document   : employee-hiring
-    Created on : Nov 4, 2019, 10:12:20 PM
+    Document   : employee-editing
+    Created on : Nov 19, 2019, 4:58:45 PM
     Author     : zofia
 --%>
 
@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../html/stylesheets.html" %>
-        <title>Employee Hiring</title>
+        <title>Employee Editing</title>
     </head>
     <body background="../img/background.jpg">
 
@@ -35,58 +35,43 @@
                 </div>
             </div>
         </div>
-        
+                    
         <div class="card mb-3 log-in">           
             <div class="card-body"> 
                 <h4 class="mb-3 text-center">Register employee</h4>
-                <form class="needs-validation" action="EmployeeController" method="GET" novalidate="">                   
+                <form class="needs-validation" action="EmployeeUserAreaController?action=2&cui=${employee.cui}" method="POST" novalidate="">
+                    <div class="mb-3">
+                        <label for="cui">CUI</label>
+                        <input type="text" class="form-control" id="cui" value="${employee.cui}" name="cui" disabled="">                      
+                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="firstName">First name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="First Name" name="name" value="" required="">
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name" name="name" value="${employee.name}" required="">
                             <div class="invalid-feedback">
                               Valid first name is required.
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="lastName">Last name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lastName" value="" required="">
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lastName" value="${employee.lastName}" required="">
                             <div class="invalid-feedback">
                               Valid last name is required.
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="cui">CUI</label>
-                        <input type="text" class="form-control" id="cui" placeholder="CUI" name="cui" required="">
-                        <div class="invalid-feedback">
-                          Valid CUI is required.
-                        </div>                        
-                    </div>
+                    
                     <div class="row">
-                        <div class="col-md-4 mb-3">                           
-                            <label for="date">Hiring date</label>
-                            <input type="date" class="form-control" id="date" name="date" value="${date}" required="">
-                            <div class="invalid-feedback">
-                                Please select a valid date.
-                            </div>  
-                        </div>
-                        <div class="col-md-4 mb-3">
+                        
+                        <div class="col-md-5 mb-3">
                             <label for="area">Area</label>
-                            <select class="custom-select d-block w-100" id="area" name="area" required="">
-                                <option value="">Choose...</option>
-                                <c:forEach var="item" items="${sessionScope.areas}">
-                                    <option value="${item}">${item}</option>
-                                </c:forEach>
-                                <!editar forEach RECORDAR> 
+                            <select class="custom-select d-block w-100" id="area" name="area" disabled="">
+                                <option value="${employee.idArea}">${employee.idArea}</option>
                             </select>
-                            <div class="invalid-feedback">
-                              Please select a valid area.
-                            </div>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-5 mb-3">
                             <label for="salary">Salary</label>
-                            <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary" required="">
+                            <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary" value="${employee.salary}" required="">
                             <div class="invalid-feedback">
                               Valid salary is required
                             </div>
@@ -94,11 +79,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="discount">
-                            IGSS Discount
+                            IGSS/IRTRA Discount
                             <span class="text-muted">(Optional)</span>
                         </label>
                         <div class="input-group">                           
-                            <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount" value="0">
+                            <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount" value="${employee.discount}">
                             <div class="invalid-feedback" style="width: 100%;">
                                 Valid discount is required.
                             </div>
@@ -143,7 +128,6 @@
             });
           }, false);
         })();
-        </script>
-    
+        </script>            
     </body>
 </html>

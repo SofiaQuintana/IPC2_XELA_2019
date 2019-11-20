@@ -26,7 +26,7 @@
         
         <div class="card mb-3 log-in">
             <img src="img/hospital.png" class="logotype" alt="icon">
-            <form action="SignInController" method="GET">
+            <form action="SignInController" method="POST">
                 <div class="card-body">
                     <h1 class="h3 font-weight-normal text-center">Sign in</h1>
                     <label for="inputUsername" class="sr-only">Username</label>
@@ -69,14 +69,6 @@
             </div>
         </footer>
         
-        <c:if test="${requestScope['error'] != null}">
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('#InfoModal').modal('show');
-                });
-            </script>
-        </c:if>
-
         <div class="modal fade" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -96,7 +88,15 @@
             </div>
         </div>
         
-       <%@include file="html/scripts.html"%> 
+       <%@include file="html/scripts.html"%>
+       
+       <c:if test="${requestScope['error'] != null}">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#InfoModal').modal('show');
+                });
+            </script>
+        </c:if>
         
     </body>
 </html>

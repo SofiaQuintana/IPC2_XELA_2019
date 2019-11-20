@@ -11,30 +11,24 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author zofia
  */
-public class Employee {
+public class Specialist {
     private String cui;
-    private int idArea;
     private String name;
     private String lastName;
-    private double salary;
-    private double discount;
+    private boolean active;
 
-    public Employee(HttpServletRequest request, int idArea, double discount) { //Constructor a traves de un request
+    public Specialist(HttpServletRequest request) {
         this.cui = request.getParameter("cui");
-        this.idArea = idArea;
         this.name = request.getParameter("name");
         this.lastName = request.getParameter("lastName");
-        this.salary = Double.valueOf(request.getParameter("salary"));
-        this.discount = discount;
+        this.active = true;
     }
     
-    public Employee(String cui, int idArea, String name, String lastName, double salary, double discount) {
+    public Specialist(String cui, String name, String lastName, boolean active) {
         this.cui = cui;
-        this.idArea = idArea;
         this.name = name;
         this.lastName = lastName;
-        this.salary = salary;
-        this.discount = discount;
+        this.active = active;
     }
 
     public String getCui() {
@@ -43,14 +37,6 @@ public class Employee {
 
     public void setCui(String cui) {
         this.cui = cui;
-    }
-
-    public int getIdArea() {
-        return idArea;
-    }
-
-    public void setIdArea(int idArea) {
-        this.idArea = idArea;
     }
 
     public String getName() {
@@ -69,19 +55,12 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public double getSalary() {
-        return salary;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
+    public void setActive(boolean active) {
+        this.active = active;
     }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
+    
 }

@@ -14,9 +14,32 @@ and open the template in the editor.
     margin-left: 325px;
 }
 
+.dual-card {
+    max-width: 85%;
+    margin-top: 50px;
+    margin-left: 100px;
+    border-color: #b2ced6;
+}
+
+.single-card {
+    border-color: #b2ced6;
+}
+
+.thead-color {
+    background: #16516D;
+    color: white;
+}
+
+.table {
+    border: 1px solid;
+    border-color: #16516D;
+}
+
 footer {
     background-color: #7FA9C1; 
     padding-top: 2vh;
+    padding-bottom: 0.1vh;
+    margin-top: 50px;
 }
 
 .copyright
@@ -40,6 +63,10 @@ footer {
     margin-left: 160px;
 }
 
+#singleCardDiv {
+    overflow-y: scroll;
+}
+
 .btn-light {
     color: whitesmoke;
     background-color: #16516D;
@@ -50,6 +77,18 @@ footer {
     margin-left: 160px;
     margin-bottom: 25px;
     width: 50%;
+}
+
+.links {
+    width: 20%;
+    margin-bottom: 15px;
+    background-color: #b2ced6;
+    border-color: #b2ced6; 
+    color: #16516D;
+}
+
+.btn-submit {
+    width: 100%;
 }
 
 @media (max-width: 768px) 

@@ -5,6 +5,7 @@
  */
 package com.zofia.hospital.dummyclasses;
 
+import javax.servlet.http.HttpServletRequest;
 /**
  *
  * @author zofia
@@ -14,6 +15,12 @@ public class User {
     private String cui;
     private String password;
 
+    public User(HttpServletRequest request, String cui) { //Constructor a base de request.
+        this.username = request.getParameter("username");
+        this.cui = cui;
+        this.password = request.getParameter("password");
+    }
+    
     public User(String username, String cui, String password) {
         this.username = username;
         this.cui = cui;
