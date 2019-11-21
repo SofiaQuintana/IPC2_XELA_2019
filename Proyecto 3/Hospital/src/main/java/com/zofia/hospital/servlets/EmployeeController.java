@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeeController extends HttpServlet {
     private GeneralDBManager manager = new GeneralDBManager();
     private Connection connection;
+    private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee;";
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,7 +49,7 @@ public class EmployeeController extends HttpServlet {
             WorkingRecord record = new WorkingRecord(employee.getCui() + "-Contratacion", employee.getCui(), "Contratacion", date);
             employeeDB.addRecord(record, Date.valueOf(date)); //Agrega el record de contratacion a la db.
             //RECORDAR HAY QUE FORWARD HACIA ALGUN LADO.
-            request.getSession().setAttribute("employees", employeeDB.filterEmployees()); //Manda de nuevo la lista de empleados filtrados.
+            request.getSession().setAttribute("employees", employeeDB.filterEmployees(SELECT_ALL_EMPLOYEES)); //Manda de nuevo la lista de empleados filtrados.
             if(employee.getIdArea() == 1 || employee.getIdArea() == 2 || employee.getIdArea() == 3 
                 || employee.getIdArea() == 4) {
                 request.setAttribute("info", employee.getCui());

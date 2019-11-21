@@ -33,6 +33,7 @@ public class SignInController extends HttpServlet{
     private List<String> areas = new ArrayList<>();
     private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //Formato de fecha
     private LocalDate date = LocalDate.now(); //Fecha del dia
+    private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee;";
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,15 +54,15 @@ public class SignInController extends HttpServlet{
                     this.areas = employeeManager.getAreaName("SELECT Name FROM Area;");                  
                     int areaId = employeeManager.getLatestIdArea() + 1;
                     request.getSession().setAttribute("idArea", areaId); //Manda a la sesion el ultimo id de la lista
-                    request.getSession().setAttribute("employees", employeeManager.filterEmployees());
+                    request.getSession().setAttribute("employees", employeeManager.filterEmployees(SELECT_ALL_EMPLOYEES));
                     request.getSession().setAttribute("areas", this.areas); //Manda a la sesion la lista de areas del sistema.
                     forward(request, response, "jsp/human-resources-home.jsp");                    
                 break;
                 case 3: //Farmaceutica
-                    forward(request, response, "/Hospital/jsp/pharmaceutics-home.jsp");
+                    response.sendRedirect("/Hospital/jsp/MedicineController?action=1");
                 break;
                 case 4: //Recepcion
-                    forward(request, response, "/Hospital/jsp/receptionist-home.jsp");
+                    response.sendRedirect("/Hospital/jsp/PatientController?action=1");;
                 break;
     }
 

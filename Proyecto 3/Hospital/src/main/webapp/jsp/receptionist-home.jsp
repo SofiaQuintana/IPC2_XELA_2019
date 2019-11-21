@@ -1,78 +1,68 @@
 <%-- 
-    Document   : human-resources-home
-    Created on : Nov 4, 2019, 11:01:47 PM
+    Document   : receptionist-home
+    Created on : Nov 20, 2019, 3:37:56 PM
     Author     : zofia
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../html/stylesheets.html" %>
         <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-        
         <title>Home</title>
     </head>
     <body background="img/background.jpg">
         
         <nav id="navbar" class="navbar navbar-light" style="background-color: #7FA9C1">
-            <a class="navbar-brand" href="/Hospital/jsp/EmployeeUserAreaController?action=3">
+            <a class="navbar-brand" href="/Hospital/jsp/PatientController?action=1">
                 <img src="../img/hospital.png" style=" width: 10%" alt="General Hospital">
                 GT Hospital
             </a>
             <div class="dropdown">
                 <button class="btn btn-outline-light" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Human Resources
+                Check-In
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-                    <a class="dropdown-item" href="/Hospital/jsp/employee-hiring.jsp">Hiring Registration</a>
-                    <a class="dropdown-item" href="/Hospital/jsp/quit-fired-registration.jsp">Quit/Dismiss Registration</a>
-                    <a class="dropdown-item" href="/Hospital/jsp/pay-rise-registration.jsp">Pay rise registration</a>
-                    <a class="dropdown-item" href="#">Payment Registration</a>
-                    <a class="dropdown-item" href="#">Vacation Registration</a>
-                    <a class="dropdown-item" href="/Hospital/jsp/RoomController?action=1">Room Registration</a>
-                    <a class="dropdown-item" href="/Hospital/jsp/SpecialistController?action=1">Specialist Registration</a>
-                    <a class="dropdown-item" href="#">Room Registration</a>
-
-                    <a class="dropdown-item" href="/Hospital/jsp/area-registration.jsp">Area Registration</a>
+                    <a class="dropdown-item" href="/Hospital/jsp/PatientController?action=2">Patient Registration</a>
+                    <a class="dropdown-item" href="/Hospital/jsp/medicine-selling-registration.jsp">Medic Consultation Registration</a>
+                    <a class="dropdown-item" href="#">Assign Nurse/Doctor</a>
                 </div>
             </div> 
         </nav>
         
         <div class="card mb-3 dual-card">
             <div class="card-body">
-                <h4 class="mb-3 text-center">Employees</h4>
+                <h4 class="mb-3 text-center">Pacientes Internados</h4>
                 <br>
-                <table class="table table-hover">
-                        <thead class="thead-color">
+                <table class="table alertTable table-hover">
+                    <thead class="alertHeader">
+                        <tr>
+                            <th scope="col">Patient CUI</th>
+                            <th scope="col">Room</th>
+                            <th scope="col">Initial Date</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Other</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="patient" items="${sessionScope.admitted}" >
                             <tr>
-                                <th scope="col">Employee CUI</th>
-                                <th scope="col">Id Area</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Salary</th>
-                                <th scope="col">Discounts</th>
-                                <th scope="col">Action</th>
+                                <td>${patient.patientCui}</td>
+                                <td>${patient.idRoom}</td>
+                                <td>${patient.initialDate}</td>
+                                <td>
+                                    <a href="/Hospital/jsp/PatientController?action=13&id=${patient.patientCui}" class="btn btn-link btn-sm" role="button">Assign Doctor/Nurse</a>                                      
+                                </td>
+                                <td>
+                                    <a href="/Hospital/jsp/PatientController?action=6&id=${patient.patientCui}" class="btn btn-link btn-sm" role="button">Facturar</a>                                      
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="employee" items="${employees}" >
-                                <tr>
-                                    <td>${employee.cui}</td>
-                                    <td>${employee.idArea}</td>
-                                    <td>${employee.name}</td>
-                                    <td>${employee.lastName}</td>
-                                    <td>Q${employee.salary}</td>
-                                    <td>${employee.discount}</td>
-                                    <td>
-                                        <a href="/Hospital/jsp/EmployeeUserAreaController?action=1&cui=${employee.cui}" class="btn btn-link btn-sm" role="button">Edit</a>                                      
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
         
@@ -107,6 +97,5 @@
         </footer>
         
         <%@include file="../html/scripts.html" %>
-        
     </body>
 </html>

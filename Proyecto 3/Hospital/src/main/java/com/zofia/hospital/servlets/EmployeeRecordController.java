@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeeRecordController extends HttpServlet {
     private GeneralDBManager connectionManager = new GeneralDBManager();
     private Connection connection;
+    private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee;";
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,7 +39,7 @@ public class EmployeeRecordController extends HttpServlet {
             String query = "DELETE FROM User WHERE CUI = '" + record.getCui() + "';"; //Query para eliminar el usuario de la persona despedida/retirada.
             employeeManager.addRecord(record, Date.valueOf(date)); //Agrega el registro a la DB.
             connectionManager.updateDataBaseTable(query); //Actualiza la db.
-            request.getSession().setAttribute("employees", employeeManager.filterEmployees()); //Manda de nuevo la lista de empleados filtrados.
+            request.getSession().setAttribute("employees", employeeManager.filterEmployees(SELECT_ALL_EMPLOYEES)); //Manda de nuevo la lista de empleados filtrados.
             forward(request, response, "quit-fired-registration.jsp");
         } catch(Exception e) {
             request.setAttribute("error", true);

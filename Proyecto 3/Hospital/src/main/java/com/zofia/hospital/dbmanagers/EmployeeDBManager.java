@@ -36,10 +36,8 @@ public class EmployeeDBManager {
     private static final String SELECT_USER_QUERY = "SELECT * FROM User WHERE Username = '";
     private static final String SELECT_ALL_USERS = "SELECT * FROM User;";
     private static final String SELECT_EMPLOYEE_QUERY = "SELECT * FROM Employee WHERE CUI = '";
-    private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee;";
     private static final String SELECT_AREAS_QUERY = "SELECT * FROM Area WHERE Name = '";
     private static final String SELECT_AREA_DESC = "SELECT * FROM Area ORDER BY IdArea DESC;";
-    private static final String SELECT_RECORD_QUERY = "SELECT * FROM WorkingRecord WHERE CUI = '";
     private static final String SELECT_ALL_RECORDS = "SELECT * FROM WorkingRecord WHERE IdRecord LIKE '%Despido%' OR IdRecord LIKE '%Renuncia%';";
     
     public EmployeeDBManager(Connection connection) { //Constructor
@@ -314,8 +312,8 @@ public class EmployeeDBManager {
     }
     
     //Filtra a los empleados que pueden tener un usuario en el sistema.
-    public List<Employee> filterEmployees() {
-        this.employees = getEmployees(SELECT_ALL_EMPLOYEES);
+    public List<Employee> filterEmployees(String query) {
+        this.employees = getEmployees(query);
         this.records = getWorkingRecords(SELECT_ALL_RECORDS);       
         for (int i = 0; i < employees.size(); i++) {
             Employee employee = employees.get(i);

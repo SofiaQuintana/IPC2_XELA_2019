@@ -67,6 +67,20 @@ footer {
     overflow-y: scroll;
 }
 
+#secondCardDiv {
+    overflow-y: scroll;
+}
+
+.alertTable {
+    border: 1px solid;
+    border-color: #cc0000;
+}
+
+.alertHeader {
+    background: #cc0000;
+    color: white;
+}
+
 .btn-light {
     color: whitesmoke;
     background-color: #16516D;

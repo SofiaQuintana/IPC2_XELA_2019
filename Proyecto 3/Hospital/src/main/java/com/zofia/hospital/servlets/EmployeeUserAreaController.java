@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeeUserAreaController extends HttpServlet {
     private GeneralDBManager manager = new GeneralDBManager();
     private Connection connection;
+    private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee;";
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,7 +41,7 @@ public class EmployeeUserAreaController extends HttpServlet {
                 break;
                 case 3:
                     EmployeeDBManager employeeManager = new EmployeeDBManager(this.connection);
-                    request.getSession().setAttribute("employees", employeeManager.filterEmployees());
+                    request.getSession().setAttribute("employees", employeeManager.filterEmployees(SELECT_ALL_EMPLOYEES));
                     response.sendRedirect("/Hospital/jsp/human-resources-home.jsp");
                 break;
             }
@@ -69,7 +70,7 @@ public class EmployeeUserAreaController extends HttpServlet {
             String query = "UPDATE Employee SET Name = '" + name +"', LastName = '" 
                     + lastName + "', Salary = " + salary + ", Discount = " + discount + " WHERE CUI = '" + cui + "';";
             manager.updateDataBaseTable(query);
-            request.getSession().setAttribute("employees", employeeManager.filterEmployees());
+            request.getSession().setAttribute("employees", employeeManager.filterEmployees(SELECT_ALL_EMPLOYEES));
             manager.disconnect();
             response.sendRedirect("/Hospital/jsp/human-resources-home.jsp");
         } catch(Exception e) {

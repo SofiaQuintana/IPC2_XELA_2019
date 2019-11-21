@@ -28,7 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeePaymentsController extends HttpServlet {
     private GeneralDBManager manager = new GeneralDBManager();
     private Connection connection;
-    
+    private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee;";
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.connection = manager.dataBaseConnection(); //Coneccion a la db.
@@ -43,7 +44,7 @@ public class EmployeePaymentsController extends HttpServlet {
             WorkingRecord record = new WorkingRecord(Math.random() + "-" + employee.getCui() + "-Aumento", employee.getCui(), "Aumento", date);
             employeeManager.addRecord(record, Date.valueOf(date)); //Ingresa un nuevo registro de aumento a la db.
             manager.updateDataBaseTable(query);
-            request.getSession().setAttribute("employees", employeeManager.filterEmployees()); //Manda de nuevo la lista de empleados filtrados.
+            request.getSession().setAttribute("employees", employeeManager.filterEmployees(SELECT_ALL_EMPLOYEES)); //Manda de nuevo la lista de empleados filtrados.
             forward(request, response, "pay-rise-registration.jsp");
         } catch(Exception e) {
             request.setAttribute("error", true);
