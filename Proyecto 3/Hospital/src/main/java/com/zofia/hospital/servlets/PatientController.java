@@ -10,6 +10,7 @@ import com.zofia.hospital.dbmanagers.EmployeeDBManager;
 import com.zofia.hospital.dbmanagers.GeneralDBManager;
 import com.zofia.hospital.dbmanagers.MonetaryRegisterDBManager;
 import com.zofia.hospital.dbmanagers.PatientDBManager;
+import com.zofia.hospital.dummyclasses.Bill;
 import com.zofia.hospital.dummyclasses.EmployeeAssignment;
 import com.zofia.hospital.dummyclasses.MedicalConsultation;
 import com.zofia.hospital.dummyclasses.MonetaryRegistration;
@@ -45,7 +46,15 @@ public class PatientController extends HttpServlet {
     private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM Employee WHERE IdArea = 5 OR IdArea = 6;";
     private static final String SELECT_ESPECIALISTS = "SELECT * FROM Specialist WHERE Active = 1;";
     private static final String SELECT_BILL = "SELECT * FROM PatientBill WHERE PatientCUI = '";
-    
+    private static final String SPECIALIST_ASSIGNED = "SELECT * FROM SpecialistAssignment WHERE IdBill = '";
+    private static final String SELECTED_SURGERY = "SELECT * FROM Surgery WHERE IdBill = '";
+    private static final String JOIN_BILL = "SELECT p.CUI, (r.IdAssignment) Room, b.IdBill, "
+            + "e.IdAssignment, m.IdMedication, (s.IdAssignment) Specialist , su.IdSurgery, r.InitialDate, "
+            + "r.EndDate FROM Patient p INNER JOIN RoomAssignment r ON p.CUI = r.PatientCUI INNER JOIN PatientBill b "
+            + "ON p.CUI = b.PatientCUI LEFT JOIN EmployeeAssignment e ON b.IdBill = e.IdBill LEFT JOIN Medication m "
+            + "ON b.Idbill = m.IdBill LEFT JOIN SpecialistAssignment s ON b.IdBill = s.IdBill LEFT JOIN Surgery su "
+            + "ON b.IdBill = su.IdBill WHERE p.CUI = '";
+            
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.connection = manager.dataBaseConnection();
@@ -109,6 +118,12 @@ public class PatientController extends HttpServlet {
                     getPatient(request, response);
                     forward(request, response, "surgery-registration.jsp");
                 break;
+                case 15:
+                    obtainBill(request, response);
+                    forward(request, response, "bill-patient.jsp");
+                break;
+                case 16:
+                break;
             }
         } catch(IOException | ServletException e) {
             System.out.println(e.getMessage());
@@ -118,6 +133,24 @@ public class PatientController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+    }
+    //jhhhhhhhhhhhhhhhhhhhhhhhhhh
+    protected void obtainBill(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        MonetaryRegisterDBManager monetaryManager = new MonetaryRegisterDBManager(this.connection);
+        PatientDBManager patientManager = new PatientDBManager(this.connection);
+        String query = JOIN_BILL + request.getParameter("id") + "';";
+        Bill bill = monetaryManager.getBills(query).get(0);
+        Rate rate = monetaryManager.getRate(SELECT_RATE);
+        if(!bill.getSpecialistAssignment().equals("")) {
+            String temp = SPECIALIST_ASSIGNED + bill.getIdBill() + "';";
+            request.setAttribute("specialist", patientManager.getAssignedSpecialists(temp));
+        }
+        if(!bill.getIdSurgery().equals("")) {
+            String temp = SELECTED_SURGERY + bill.getIdBill() + "';";
+            request.setAttribute("surgery", patientManager.getSurgeries(temp));
+        }
+        
+        request.getSession().setAttribute("bill", bill);
     }
     
     protected void addSurgery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -5,6 +5,7 @@
  */
 package com.zofia.hospital.dbmanagers;
 
+import com.zofia.hospital.dummyclasses.Bill;
 import com.zofia.hospital.dummyclasses.MedicinePurchase;
 import com.zofia.hospital.dummyclasses.MonetaryRegistration;
 import com.zofia.hospital.dummyclasses.Rate;
@@ -25,6 +26,7 @@ public class MonetaryRegisterDBManager {
     private Connection connection; //Coneccion a la db.
     private List<MedicinePurchase> purchasings; //Lista de compras vacia.
     private List<MonetaryRegistration> registrations; //Lista de registros monetarios vacia.
+    private List<Bill> bills; //Lista de facturas vacias.
     private Rate rate; //tarifario, vacio.
     private static final String SELECT_ALL_REGISTRATIONS_DESC = "SELECT * FROM MonetaryRegistration ORDER BY RegistrationId DESC;";
 
@@ -32,6 +34,7 @@ public class MonetaryRegisterDBManager {
         this.connection = connection;
         this.purchasings = new ArrayList<>();
         this.registrations = new ArrayList<>();
+        this.bills = new ArrayList<>();
     }
     
     public List<MedicinePurchase> getPurchasings(String query) { //Obtiene las compras seleccionadas de la DB.
@@ -81,6 +84,33 @@ public class MonetaryRegisterDBManager {
         }
         return registrations;
     }
+    
+    public List<Bill> getBills(String query) { //Obtiene las facturas seleccionadas de la DB.
+        bills.clear();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(query);
+            
+            while(result.next()) {
+                String cui = result.getString("CUI");
+                String room = result.getString("Room");
+                String idBill = result.getString("IdBill");
+                String idAssignment = result.getString("IdAssignment");
+                String idMedication = result.getString("IdMedication");
+                String specialist = result.getString("Specialist");
+                String idSurgery = result.getString("IdSurgery");
+                Date initialDate = result.getDate("InitialDate");
+                Date endDate = result.getDate("EndDate");
+                Bill purchase = new Bill(cui, room, idBill, idAssignment, idMedication, specialist, idSurgery, initialDate, endDate);
+                bills.add(purchase);
+            }
+            result.close();
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return bills;
+    }
+    
     
     public Rate getRate(String query) { //Obtiene las compras seleccionadas de la DB.
         rate = null;

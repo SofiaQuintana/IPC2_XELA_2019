@@ -57,7 +57,7 @@
                                     <a href="/Hospital/jsp/PatientController?action=13&id=${patient.patientCui}" class="btn btn-link btn-sm" role="button">Assign Doctor/Nurse</a>                                      
                                 </td>
                                 <td>
-                                    <a href="/Hospital/jsp/PatientController?action=6&id=${patient.patientCui}" class="btn btn-link btn-sm" role="button">Facturar</a>                                      
+                                    <a href="/Hospital/jsp/PatientController?action=15&id=${patient.patientCui}" class="btn btn-link btn-sm" role="button">Facturar</a>                                      
                                 </td>
                             </tr>
                         </c:forEach>
